@@ -69,6 +69,54 @@ angular.module('citizen-engagement').controller('LoginCtrl', function(apiUrl, Au
       loginCtrl.error = 'Could not log in.';
     });
   };
+
+  // Add the register function to the scope.
+  loginCtrl.register = function() {
+    loginCtrl.user.firstname = "coucou";
+    loginCtrl.user.lastname = "test";
+    loginCtrl.user.phone = "123123123";
+    loginCtrl.user.roles = "citizen";
+
+
+    // Forget the previous error (if any).
+    delete loginCtrl.error;
+
+    // Show a loading message if the request takes too long.
+    $ionicLoading.show({
+      template: 'Register in...',
+      delay: 750
+    });
+
+    // Make the request to retrieve or create the user.
+    $http({
+      method: 'POST',
+      url: apiUrl + '/users',
+      data: loginCtrl.user
+    }).then(function(res) {
+
+      // If successful, give the token to the authentication service.
+      AuthService.setAuthToken(res.data.token);
+
+      // Hide the loading message.
+      $ionicLoading.hide();
+
+      // Set the next view as the root of the history.
+      // Otherwise, the next screen will have a "back" arrow pointing back to the login screen.
+      $ionicHistory.nextViewOptions({
+        disableBack: true,
+        historyRoot: true
+      });
+
+      // Go to the login page.
+      $state.go('login');
+
+    }).catch(function() {
+
+      // If an error occurs, hide the loading message and show an error message.
+      $ionicLoading.hide();
+      loginCtrl.error = 'Could not register.';
+    });
+  };
 });
 
 angular.module('citizen-engagement').controller('LogoutCtrl', function(AuthService, $state) {
@@ -79,6 +127,17 @@ angular.module('citizen-engagement').controller('LogoutCtrl', function(AuthServi
     $state.go('login');
   };
 });
+
+angular.module('citizen-engagement').controller('AnyCtrl', function(AuthService, $http) {
+  $http({
+    url: '/api-proxy/issues',
+    headers: {
+      Authorization: 'Bearer ' + AuthService.authToken
+    }
+  }).then(function(res) {
+    // ...
+  });
+})
 
 angular.module('citizen-engagement').factory('AuthInterceptor', function(AuthService) {
   return {

@@ -1,5 +1,23 @@
 <ion-view view-title="Issue List">
   <ion-content>
-    <p>Hello! This is the issue list screen.</p>
+    <div ng-controller="allIssuesCtrl">
+
+        <div ng-repeat="issue in issues" class="list"  style="border-bottom: dashed 1px #0d0743; background-color: black; border-top: dashed 1px #0d0743;">
+          <div class="row">
+            <div class="col-19" style="overflow: hidden;"><img src="{{issue.imageUrl}}" width="100px"></div>
+            <div class="col-21" style="padding-left: 5px; border-right: solid #0d0743 1px;"><h5>{{issue.issueType.name}}</h5></div>
+            <div class="col-40" style="padding-left: 5px; border-right: solid #0d0743 1px;"><p>{{issue.description}}</p></div>
+            <div class="col-20" style="padding-left: 5px;"><p> {{issue.state}}</p></div>
+          </div>
+
+          <div class="row">
+            <button class="button button-full button-positive" ui-sref="app.issueDetails({issueId:issue.id})">
+              <i class="button button-icon icon ion-log-in light"> View details</i>
+            </button>
+          </div>
+
+        </div>
+        <ion-infinite-scroll ng-if="!noMoreItemsAvailable" on-infinite="loadMore()" distance="10%"></ion-infinite-scroll>
+      </div>
   </ion-content>
 </ion-view>
