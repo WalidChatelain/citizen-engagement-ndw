@@ -4,7 +4,7 @@
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
 // 'starter.controllers' is found in controllers.js
-angular.module('citizen-engagement', ['ionic', 'angular-storage'])
+angular.module('citizen-engagement', ['ionic', 'angular-storage','geolocation'])
 
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
@@ -92,11 +92,26 @@ angular.module('citizen-engagement').config(function($stateProvider, $urlRouterP
       }
     })
 
+
     .state('app.issueDetails', {
-      url: '/issueDetails',
+      url: '/issueDetails/:issueId',
       views: {
         'menuContent': {
-          templateUrl: 'templates/issueDetails.html'
+          templateUrl: 'templates/issueDetails.html',
+          controller: "issueCtrl",
+          controllerAs: "issueCtrl"
+        }
+        
+      }
+
+    })
+
+    .state('app.issueMap', {
+      url: '/issueMap',
+      views: {
+        'tab-issueMap': {
+          templateUrl: 'templates/issueMap.html',
+          controller: 'AllIssuesMapController'
         }
       }
     })
