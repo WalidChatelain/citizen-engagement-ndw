@@ -7,15 +7,14 @@ angular.module('citizen-engagement')
     var i = 0;
     var currentPage = 0
 
+    //console.log('controller');
     $scope.loadMore = function() {
+        //console.log('load more');
 
         i++;
         $http({
             method: 'GET',
-            url: apiUrl + '/issues',
-            headers: {
-                'x-pagination': currentPage + ";1"
-            }
+            url: apiUrl + '/issues?include=issueType&page=' + currentPage
         }).success(function(issues) {
             $scope.issues = $scope.issues.concat(issues);
         });
@@ -31,12 +30,15 @@ angular.module('citizen-engagement')
 
     .controller("issueCtrl", function($scope, $http, apiUrl, $stateParams) {
         var issueId = $stateParams.issueId;
+        var issueTypeName = $stateParams.issueTypeHref;
+        //console.log(issueType);
         $http({
             method: 'GET',
-            url: apiUrl + '/issues/'+issueId
+            url: apiUrl + '/issues/'+issueId+'?include=issueType'
         }).success(function(issue) {
 
             $scope.issue = issue;
+
         });
 
 })
