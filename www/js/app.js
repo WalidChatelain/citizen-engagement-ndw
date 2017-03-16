@@ -65,15 +65,6 @@ angular.module('citizen-engagement').config(function($stateProvider, $urlRouterP
       }
     })
 
-    .state('app.settings', {
-      url: '/settings',
-      views: {
-        'menuContent': {
-          templateUrl: 'templates/settings.html'
-        }
-      }
-    })
-
     .state('app.policy', {
       url: '/policy',
       views: {
