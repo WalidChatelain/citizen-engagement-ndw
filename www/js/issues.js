@@ -39,9 +39,9 @@ angular.module('citizen-engagement')
             $scope.issue = issue;
         });
 
-
 })
-    .controller("newIssueCtrl", function($scope, $http, apiUrl, $stateParams, GeolocService){
+
+    /*.controller("newIssueCtrl", function($scope, $http, apiUrl, $stateParams, GeolocService){
         $scope.loadIssueTypes = function () {
             $scope.issue = {};
             $http({
@@ -64,4 +64,31 @@ angular.module('citizen-engagement')
                 console.log(res);
             })
         };
+        });*/
+
+        angular.module('citizen-engagement').controller('NewIssueCtrl', function(geolocation, $log) {
+          var newIssueCtrl = this;
+
+          geolocation.getLocation().then(function(data){
+            newIssueCtrl.latitude = data.coords.latitude;
+            newIssueCtrl.longitude = data.coords.longitude;
+          }).catch(function(err) {
+            $log.error('Could not get location because: ' + err.message);
+          });
+        });
+
+        angular.module('citizen-engagement').controller('MapCtrl', function() {
+          var mapCtrl = this;
+          mapCtrl.defaults = {};
+          mapCtrl.markers=[];
+          mapCtrl.center = {
+            lat: 51.48,
+            lng: 0,
+            zoom: 14
+          };
+          mapCtrl.markers.push({
+            lat: 51.48,
+            lng: 0,
+            message:'hello world'
+          });
         });
