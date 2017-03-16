@@ -1,7 +1,7 @@
 {
   "name": "citizen-engagement-ndw-sidemenu",
-  "app_id": "",
-   "proxies": [
+  "app_id": "03e4da4d",
+  "proxies": [
     {
       "path": "/api-proxy",
       "proxyUrl": "https://comem-citizen-engagement-2017i.herokuapp.com/api"
