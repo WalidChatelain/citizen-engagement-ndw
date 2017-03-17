@@ -22,11 +22,13 @@ angular.module('citizen-engagement').controller('LoginCtrl', function(apiUrl, Au
 
   // The $ionicView.beforeEnter event happens every time the screen is displayed.
   $scope.$on('$ionicView.beforeEnter', function() {
+    //console.log('test');
     // Re-initialize the user object every time the screen is displayed.
     // The first name and last name will be automatically filled from the form thanks to AngularJS's two-way binding.
     loginCtrl.user = {};
     // Pas toucher, permet de cacher les champs de registration de base.
     loginCtrl.registrationEnable = false;
+    //console.log(loginCtrl.registrationEnable);
   });
 
 
@@ -77,52 +79,60 @@ angular.module('citizen-engagement').controller('LoginCtrl', function(apiUrl, Au
 
   // Add the register function to the scope.
   loginCtrl.register = function() {
-    loginCtrl.user.firstname = "coucou";
+    /*loginCtrl.user.firstname = "coucou";
     loginCtrl.user.lastname = "test";
-    loginCtrl.user.phone = "123123123";
+    loginCtrl.user.phone = "123123123";*/
     loginCtrl.user.roles = "citizen";
+
     // Pas toucher ça, pour que le formulaire registration s'affiche
-    loginCtrl.registrationEnable =! loginCtrl.registrationEnable;
+    loginCtrl.registrationEnable = true;
+    //console.log(loginCtrl.registrationEnable);
 
 
     // Forget the previous error (if any).
     delete loginCtrl.error;
 
     // Show a loading message if the request takes too long.
-    $ionicLoading.show({
+    /*$ionicLoading.show({
       template: 'Register in...',
       delay: 750
-    });
+    });*/
 
     // Make the request to retrieve or create the user.
-    $http({
-      method: 'POST',
-      url: apiUrl + '/users',
-      data: loginCtrl.user
-    }).then(function(res) {
+    console.log(loginCtrl.registrationEnable);
+    if (loginCtrl.registrationEnable && loginCtrl.user.firstname != null && loginCtrl.user.lastname != null && loginCtrl.user.name != null && loginCtrl.user.password != null){
+        $http({
+        method: 'POST',
+        url: apiUrl + '/users',
+        data: loginCtrl.user
+      }).then(function(res) {
+        loginCtrl.registrationEnable = false;
+        // If successful, give the token to the authentication service.
+        AuthService.setAuthToken(res.data.token);
 
-      // If successful, give the token to the authentication service.
-      AuthService.setAuthToken(res.data.token);
+        // Hide the loading message.
+        $ionicLoading.hide();
 
-      // Hide the loading message.
-      $ionicLoading.hide();
+        // Set the next view as the root of the history.
+        // Otherwise, the next screen will have a "back" arrow pointing back to the login screen.
+        $ionicHistory.nextViewOptions({
+          disableBack: true,
+          historyRoot: true
+        });
 
-      // Set the next view as the root of the history.
-      // Otherwise, the next screen will have a "back" arrow pointing back to the login screen.
-      $ionicHistory.nextViewOptions({
-        disableBack: true,
-        historyRoot: true
+        // Go to the login page.
+        $state.go('login');
+
+      }).catch(function() {
+
+        // If an error occurs, hide the loading message and show an error message.
+        $ionicLoading.hide();
+        loginCtrl.error = 'Could not register.';
       });
-
-      // Go to the login page.
-      $state.go('login');
-
-    }).catch(function() {
-
-      // If an error occurs, hide the loading message and show an error message.
-      $ionicLoading.hide();
-      loginCtrl.error = 'Could not register.';
-    });
+    }else{
+      console.log("ça passe pas");
+    }
+    
   };
 });
 

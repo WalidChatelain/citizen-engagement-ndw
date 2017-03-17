@@ -81,11 +81,12 @@ angular.module('citizen-engagement').config(function($stateProvider, $urlRouterP
       url: '/newIssue',
       views: {
         'menuContent': {
-          templateUrl: 'templates/newIssue.html'
+          templateUrl: 'templates/newIssue.html',
+         /*controller: "NewIssueCtrl",
+          controllerAs: "newIssueCtrl"*/
         }
       }
     })
-
 
     .state('app.issueDetails', {
       url: '/issueDetails/:issueId',
@@ -95,12 +96,8 @@ angular.module('citizen-engagement').config(function($stateProvider, $urlRouterP
           controller: "issueCtrl",
           controllerAs: "issueCtrl"
         }
-
       }
-
-    })
-
-  ;
+    });
 
   // Define the default state (i.e. the first screen displayed when the app opens).
   $urlRouterProvider.otherwise(function($injector) {
