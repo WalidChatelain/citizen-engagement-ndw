@@ -68,15 +68,40 @@ console.log(res);
 };
 });*/
 
-angular.module('citizen-engagement').controller('newIssueCtrl', function(geolocation, $log) {
+angular.module('citizen-engagement').controller('newIssueCtrl', function(geolocation, $log, $scope, $http, apiUrl, $ionicPopup, CameraService) {
   var newIssueCtrl = this;
-
+  $scope.loadIssueTypes = function () {
+    $scope.issue = {};
+    $http({
+      method: 'GET',
+      url: apiUrl + '/issueTypes/'
+    }).success(function (issueTypes) {
+      $scope.issueTypes = issueTypes;
+    });
+  }
+  $scope.loadIssueTypes();
   geolocation.getLocation().then(function(data){
     newIssueCtrl.latitude = data.coords.latitude;
     newIssueCtrl.longitude = data.coords.longitude;
   }).catch(function(err) {
     $log.error('Could not get location because: ' + err.message);
   });
+
+  newIssueCtrl.takePicture = function() {
+    if (!CameraService.isSupported()) {
+      return $ionicPopup.alert({
+        title: 'Not supported',
+        template: 'You cannot use the camera on this platform'
+      });
+    }
+
+    CameraService.getPicture().then(function(result) {
+      $log.debug('Picture taken!');
+      newIssueCtrl.pictureData = result;
+    }).catch(function(err) {
+      $log.error('Could not get picture because: ' + err.message);
+    });
+  };
 });
 
 angular.module('citizen-engagement').controller('MapCtrl', function($scope, mapboxSecret) {
@@ -124,6 +149,7 @@ angular.module('citizen-engagement').controller('MapCtrl', function($scope, mapb
     }
   });
 });
+
 angular.module('citizen-engagement').factory('CameraService', function($q) {
   var service = {
     isSupported: function() {
@@ -144,24 +170,4 @@ angular.module('citizen-engagement').factory('CameraService', function($q) {
     }
   };
   return service;
-});
-
-angular.module('citizen-engagement').controller('CameraCtrl', function(CameraService, $ionicPopup, $log) {
-  var cameraCtrl = this;
-
-  cameraCtrl.takePicture = function() {
-    if (!CameraService.isSupported()) {
-      return $ionicPopup.alert({
-        title: 'Not supported',
-        template: 'You cannot use the camera on this platform'
-      });
-    }
-
-    CameraService.getPicture().then(function(result) {
-      $log.debug('Picture taken!');
-      cameraCtrl.pictureData = result;
-    }).catch(function(err) {
-      $log.error('Could not get picture because: ' + err.message);
-    });
-  };
 });

@@ -82,8 +82,8 @@ angular.module('citizen-engagement').config(function($stateProvider, $urlRouterP
       views: {
         'menuContent': {
           templateUrl: 'templates/newIssue.html',
-          controller: 'CameraCtrl',
-          controllerAs: 'CameraCtrl',
+          controller: 'newIssueCtrl',
+          controllerAs: 'newIssueCtrl',
         }
       }
     })
