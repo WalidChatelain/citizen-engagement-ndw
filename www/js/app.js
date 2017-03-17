@@ -81,7 +81,19 @@ angular.module('citizen-engagement').config(function($stateProvider, $urlRouterP
       url: '/newIssue',
       views: {
         'menuContent': {
-          templateUrl: 'templates/newIssue.html'
+          templateUrl: 'templates/newIssue.html',
+         /*controller: "NewIssueCtrl",
+          controllerAs: "newIssueCtrl"*/
+        }
+      }
+    })
+
+     .state('app.issueMap', {
+      url: '/issueMap',
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/issueMap.html',
+          controller: 'IssuesMapCtrl'
         }
       }
     })
@@ -100,15 +112,7 @@ angular.module('citizen-engagement').config(function($stateProvider, $urlRouterP
 
     })
 
-    .state('app.issueMap', {
-      url: '/issueMap',
-      views: {
-        'tab-issueMap': {
-          templateUrl: 'templates/issueMap.html',
-          controller: 'AllIssuesMapController'
-        }
-      }
-    })
+  
 
   ;
 

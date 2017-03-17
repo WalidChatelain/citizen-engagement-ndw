@@ -1,12 +1,12 @@
 <ion-view view-title="New Issue">
   <ion-content>
-	 <div>
+	 <div ng-controller="newIssueCtrl">
 	      <form name="createIssue" ng-submit="submit()">
 	        <div class="list">
 	          <label class="item item-input">
 	            <span class="input-label">Type</span>
-	            <select name="issueTypeId" ng-model="issue.issueTypeId">
-	              <option ng-repeat="issueType in issueTypes" value="{{issueType.id}}">{{issueType.name}}</option>
+	            <select name="issueTypeName" ng-model="selected">
+	              <option ng-repeat="issueType in issueTypes" value="{{issueType.href}}">{{issueType.name}}</option>
 	            </select>
 	          </label>
 

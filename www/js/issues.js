@@ -44,6 +44,7 @@ angular.module('citizen-engagement')
 })
 
     /*.controller("newIssueCtrl", function($scope, $http, apiUrl, $stateParams, GeolocService){
+        console.log('OKKKK');
         $scope.loadIssueTypes = function () {
             $scope.issue = {};
             $http({
@@ -68,15 +69,45 @@ angular.module('citizen-engagement')
         };
         });*/
 
-        angular.module('citizen-engagement').controller('NewIssueCtrl', function(geolocation, $log) {
-          var newIssueCtrl = this;
+        .controller('newIssueCtrl', function($scope, $http, apiUrl, $stateParams, geolocation, $log) {
 
-          geolocation.getLocation().then(function(data){
-            newIssueCtrl.latitude = data.coords.latitude;
-            newIssueCtrl.longitude = data.coords.longitude;
-          }).catch(function(err) {
-            $log.error('Could not get location because: ' + err.message);
-          });
+            
+            $scope.loadIssueTypes = function () {
+                $scope.issue = {};
+                    $http({
+                        method: 'GET',
+                        url: apiUrl + '/issueTypes/'
+                    }).success(function (issueTypes) {
+
+                $scope.issueTypes = issueTypes;
+
+                geolocation.getLocation().then(function(data){
+
+                    var coor = [data.coords.latitude, data.coords.longitude];
+
+                    $scope.issue.location = {
+                        type: 'Point',
+                        coordinates: coor
+                    };
+                    
+                }).catch(function(err) {
+                    $log.error('Could not get location because: ' + err.message);
+                });
+            })
+
+            };
+            $scope.loadIssueTypes();
+            $scope.submit = function () {
+            $scope.issue.issueTypeHref = $scope.selected;
+            $http({
+                method: 'POST',
+                url: apiUrl + '/issues/',
+                data: $scope.issue
+
+            }).success(function(res) {
+                console.log(res);
+            })
+        };
         });
 
         angular.module('citizen-engagement').controller('MapCtrl', function() {
