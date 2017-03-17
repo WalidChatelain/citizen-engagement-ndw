@@ -100,16 +100,6 @@ angular.module('citizen-engagement').config(function($stateProvider, $urlRouterP
 
     })
 
-    .state('app.issueMap', {
-      url: '/issueMap',
-      views: {
-        'tab-issueMap': {
-          templateUrl: 'templates/issueMap.html',
-          controller: 'AllIssuesMapController'
-        }
-      }
-    })
-
   ;
 
   // Define the default state (i.e. the first screen displayed when the app opens).

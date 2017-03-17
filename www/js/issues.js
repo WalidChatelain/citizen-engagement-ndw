@@ -79,7 +79,7 @@ angular.module('citizen-engagement')
           });
         });
 
-        angular.module('citizen-engagement').controller('MapCtrl', function($scope, mapboxSecret) {
+        angular.module('citizen-engagement').controller('MapCtrl', function($scope, mapboxSecret, leafletData) {
           var mapCtrl = this;
           var record = {
             title: 'Lorem ipsum'
@@ -119,6 +119,10 @@ angular.module('citizen-engagement')
               scope.record = record;
               return scope;
             }
+          });
+
+          leafletData.getMap().then(function(map) {
+            map.invalidateSize();
           });
         });
 
