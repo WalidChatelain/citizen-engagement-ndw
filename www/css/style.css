@@ -13,6 +13,40 @@
 	text-align: center;
 }
 
+#boutonNewIssue {
+	text-align: center;
+	padding-top: 10px;
+}
+
+#uploadIssue {
+	text-align: center;
+}
+
 .loginButton {
 	text-align: center;
+}
+
+.button {
+	background-color: #274042;
+	color: white;
+}
+
+.button:hover {
+	background-color: #088b96;
+	color: white;
+}
+
+.logoHome {
+	width: 60px;
+
+}
+
+.titreHome {
+	width: 150px;
+	padding-bottom: 10px;
+	padding-left: 20px;
+}
+
+.registration {
+	background-color: #088b96;
 }
