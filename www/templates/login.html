@@ -1,29 +1,43 @@
 <ion-view view-title="Citizen Engagement">
   <ion-content class="padding">
-
-    <!-- A banner. Choose an image and save it as www/img/banner.jpg -->
-    <!--<img src="img/banner.jpg" width="100%" alt="Citizen Engagement" />-->
-
+  <div class="titre">
+      <div class="imgLogo">
+        <img src="img/logo.png" alt="Citizen Engagement"/>
+      </div>
+      <div>
+       <img src="img/title.png" alt="Citizen Engagement"/>
+      </div>
+    </div>
     <!-- A short welcome message. -->
     <div class="card">
-      <div class="item item-text-wrap">
-        Welcome to Citizen Engagement!
-        Please log in to use the application.
+      <div class="item item-text-wrap" style="text-align: center;">
+        <h2>Welcome to Meowcitizen!</h2>
+        <p>Help people to find their cats who are stucked on a tree or somewhere else..</p>
+        <p>Please log in to use the application.</p>
       </div>
     </div>
 
     <!-- The login form that the citizen must fill. -->
     <form name="loginForm">
-
       <!-- Ionic uses lists to group related input elements. -->
       <div class="list">
-        <label class="item item-input">
-          <!-- Note the required="required" attribute used for validation. -->
-          <input type="text" placeholder="Username" ng-model="loginCtrl.user.name" required />
-        </label>
-        <label class="item item-input">
-          <input type="password" placeholder="Password" ng-model="loginCtrl.user.password" required />
-        </label>
+          <label class="item item-input">
+            <!-- Note the required="required" attribute used for validation. -->
+              <input type="text" placeholder="Username" ng-model="loginCtrl.user.name" required />
+          </label>
+          <label class="item item-input">
+              <input type="password" placeholder="Password" ng-model="loginCtrl.user.password" required/>
+          </label>
+          <!-- J'ai enlevé les ng model ici pour pas que les champs se remplissent quand on click sur register, rajoute les si tu en as besoin -->
+          <label class="item item-input" ng-show="loginCtrl.registrationEnable">
+              <input type="text" placeholder="FirstName"required/>
+          </label>
+          <label class="item item-input" ng-show="loginCtrl.registrationEnable">
+              <input type="text" placeholder="LastName" required/>
+          </label>
+          <label class="item item-input" ng-show="loginCtrl.registrationEnable">
+              <input type="text" placeholder="PhoneNumber"/>
+          </label>
       </div>
 
       <!-- Display an error message here, above the submit button, if an error occurred. -->
@@ -34,8 +48,11 @@
         The "ng-click" directive indicates which scope function to call when the form is submitted.
         The "ng-disabled" directive is used to disable the button if the form is invalid (i.e. the first name or last name is missing).
       -->
-      <button class="button button-full button-positive" ng-click="loginCtrl.logIn()" ng-disabled="loginForm.$invalid">Log in</button>
-      <button class="button button-full button-positive" ng-click="loginCtrl.register()" ng-disabled="loginForm.$invalid">Register</button>
+
+      <div class="loginButton">
+        <button class="button button-positive" ng-click="loginCtrl.logIn()" ng-disabled="loginForm.$invalid">Log in</button>
+        <button class="button button-positive" ng-click="loginCtrl.register()" >Register</button>
+      </div>
     </form>
   </ion-content>
 </ion-view>

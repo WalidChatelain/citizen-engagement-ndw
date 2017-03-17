@@ -1,1 +1,29 @@
 /* Empty. Add your own CSS if you like */
+
+
+.titre div {
+	position: relative;
+}
+
+.titre img {
+	width: 180px;
+}
+
+.titre {
+	text-align: center;
+}
+
+.loginButton {
+	text-align: center;
+}
+
+.logoHome {
+	width: 60px;
+
+}
+
+.titreHome {
+	width: 150px;
+	padding-bottom: 10px;
+	padding-left: 20px;
+}

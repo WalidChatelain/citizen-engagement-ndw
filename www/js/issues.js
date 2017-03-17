@@ -110,9 +110,31 @@ angular.module('citizen-engagement')
         };
         });
 
-        angular.module('citizen-engagement').controller('MapCtrl', function() {
+        angular.module('citizen-engagement').controller('MapCtrl', function($scope, mapboxSecret, leafletData) {
           var mapCtrl = this;
-          mapCtrl.defaults = {};
+          var record = {
+            title: 'Lorem ipsum'
+          };
+
+          var mapboxMapId = 'mapbox.satellite';
+          var mapboxAccessToken = mapboxSecret;
+
+          var mapboxTileLayerUrl = 'http://api.tiles.mapbox.com/v4/' + mapboxMapId;
+          mapboxTileLayerUrl = mapboxTileLayerUrl + '/{z}/{x}/{y}.png';
+          mapboxTileLayerUrl = mapboxTileLayerUrl + '?access_token=' + mapboxAccessToken;
+
+          $scope.$on('leafletDirectiveMap.dragend', function(event, map){
+            console.log('Map was dragged');
+          });
+          $scope.$on('leafletDirectiveMarker.click', function(event, marker) {
+            var coords = marker.model.lng + '/' + marker.model.lat;
+            console.log('Marker at ' + coords + ' was clicked');
+          });
+
+          mapCtrl.defaults = {
+            tileLayer: mapboxTileLayerUrl
+          };
+
           mapCtrl.markers=[];
           mapCtrl.center = {
             lat: 51.48,
@@ -122,6 +144,38 @@ angular.module('citizen-engagement')
           mapCtrl.markers.push({
             lat: 51.48,
             lng: 0,
-            message:'hello world'
+            message: '<div ng-include="\'templates/message.html\'"/"/>',
+            getMessageScope: function() {
+              var scope = $scope.$new();
+              scope.record = record;
+              return scope;
+            }
+          });
+
+          leafletData.getMap().then(function(map) {
+            map.invalidateSize();
           });
         });
+
+  //DEVRAIT ETRE DANS MAP.JS
+  // angular.module('citizen-engagement')
+  //        .controller('GeolocService', function (geolocation, $log) {
+  //       var service = {
+  //
+  //           locateUser: function () {
+  //
+  //               return geolocation.getLocation().then(function (data) {
+  //
+  //                   return data.coords;
+  //
+  //
+  //               }, function (error) {
+  //                   $log.error("Could not get location: " + error);
+  //                   console.log("Could not get location: " + error);
+  //               });
+  //
+  //           }
+  //       };
+  //
+  // return service;
+  // })
