@@ -68,7 +68,7 @@ console.log(res);
 };
 });*/
 
-angular.module('citizen-engagement').controller('NewIssueCtrl', function(geolocation, $log) {
+angular.module('citizen-engagement').controller('newIssueCtrl', function(geolocation, $log) {
   var newIssueCtrl = this;
 
   geolocation.getLocation().then(function(data){
