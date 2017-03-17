@@ -18,7 +18,7 @@
     </div>
 
     <!-- The login form that the citizen must fill. -->
-    <form name="loginForm">
+    <form name="loginForm" novalidate>
       <!-- Ionic uses lists to group related input elements. -->
       <div class="list">
           <label class="item item-input">
@@ -50,8 +50,8 @@
       -->
 
       <div class="loginButton">
-        <button class="button button-positive" ng-click="loginCtrl.logIn()" ng-disabled="loginForm.$invalid">Log in</button>
-        <button class="button button-positive" ng-click="loginCtrl.register()" >Register</button>
+        <button class="button buttonLog" ng-click="loginCtrl.logIn()">Log in</button>
+        <button class="button buttonLog" ng-class="{registration: loginCtrl.registrationEnable}" ng-click="loginCtrl.register()">Register</button>
       </div>
     </form>
   </ion-content>
