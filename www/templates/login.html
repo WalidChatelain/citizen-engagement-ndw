@@ -30,13 +30,13 @@
           </label>
           <!-- J'ai enlevé les ng model ici pour pas que les champs se remplissent quand on click sur register, rajoute les si tu en as besoin -->
           <label class="item item-input" ng-show="loginCtrl.registrationEnable">
-              <input type="text" placeholder="FirstName"required/>
+              <input type="text" placeholder="FirstName" ng-model="loginCtrl.user.firstname" required/>
           </label>
           <label class="item item-input" ng-show="loginCtrl.registrationEnable">
-              <input type="text" placeholder="LastName" required/>
+              <input type="text" placeholder="LastName" ng-model="loginCtrl.user.lastname" required/>
           </label>
           <label class="item item-input" ng-show="loginCtrl.registrationEnable">
-              <input type="text" placeholder="PhoneNumber"/>
+              <input type="text" placeholder="PhoneNumber" ng-model="loginCtrl.user.phone"/>
           </label>
       </div>
 
