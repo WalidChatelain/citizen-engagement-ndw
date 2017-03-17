@@ -25,7 +25,10 @@ angular.module('citizen-engagement').controller('LoginCtrl', function(apiUrl, Au
     // Re-initialize the user object every time the screen is displayed.
     // The first name and last name will be automatically filled from the form thanks to AngularJS's two-way binding.
     loginCtrl.user = {};
+    // Pas toucher, permet de cacher les champs de registration de base.
+    loginCtrl.registrationEnable = false;
   });
+
 
   // Add the register function to the scope.
   loginCtrl.logIn = function() {
@@ -40,6 +43,8 @@ angular.module('citizen-engagement').controller('LoginCtrl', function(apiUrl, Au
     });
 
     // Make the request to retrieve or create the user.
+    // TU DOIS UTILISER LA VARIABLE loginCtrl.registrationEnable pour tester si tu dois accepter la registration
+    // si false = envoie pas, si true et que les champs sont correct = envoie
     $http({
       method: 'POST',
       url: apiUrl + '/auth',
@@ -76,6 +81,8 @@ angular.module('citizen-engagement').controller('LoginCtrl', function(apiUrl, Au
     loginCtrl.user.lastname = "test";
     loginCtrl.user.phone = "123123123";
     loginCtrl.user.roles = "citizen";
+    // Pas toucher ça, pour que le formulaire registration s'affiche
+    loginCtrl.registrationEnable =! loginCtrl.registrationEnable;
 
 
     // Forget the previous error (if any).
