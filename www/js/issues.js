@@ -7,15 +7,14 @@ angular.module('citizen-engagement')
     var i = 0;
     var currentPage = 0
 
+    //console.log('controller');
     $scope.loadMore = function() {
+        //console.log('load more');
 
         i++;
         $http({
             method: 'GET',
-            url: apiUrl + '/issues',
-            headers: {
-                'x-pagination': currentPage + ";1"
-            }
+            url: apiUrl + '/issues?include=issueType&page=' + currentPage
         }).success(function(issues) {
             $scope.issues = $scope.issues.concat(issues);
         });
@@ -31,17 +30,20 @@ angular.module('citizen-engagement')
 
     .controller("issueCtrl", function($scope, $http, apiUrl, $stateParams) {
         var issueId = $stateParams.issueId;
+        var issueTypeName = $stateParams.issueTypeHref;
+        //console.log(issueType);
         $http({
             method: 'GET',
-            url: apiUrl + '/issues/'+issueId
+            url: apiUrl + '/issues/'+issueId+'?include=issueType'
         }).success(function(issue) {
 
             $scope.issue = issue;
+
         });
 
-
 })
-    .controller("newIssueCtrl", function($scope, $http, apiUrl, $stateParams, GeolocService){
+
+    /*.controller("newIssueCtrl", function($scope, $http, apiUrl, $stateParams, GeolocService){
         $scope.loadIssueTypes = function () {
             $scope.issue = {};
             $http({
@@ -64,7 +66,8 @@ angular.module('citizen-engagement')
                 console.log(res);
             })
         };
-        });
+        });*/
+
         angular.module('citizen-engagement').controller('NewIssueCtrl', function(geolocation, $log) {
           var newIssueCtrl = this;
 
@@ -98,8 +101,9 @@ angular.module('citizen-engagement')
           });
 
           mapCtrl.defaults = {
-            ti leLayer: mapboxTileLayerUrl
+            tileLayer: mapboxTileLayerUrl
           };
+
           mapCtrl.markers=[];
           mapCtrl.center = {
             lat: 51.48,
@@ -117,3 +121,26 @@ angular.module('citizen-engagement')
             }
           });
         });
+
+  //DEVRAIT ETRE DANS MAP.JS
+  // angular.module('citizen-engagement')
+  //        .controller('GeolocService', function (geolocation, $log) {
+  //       var service = {
+  //
+  //           locateUser: function () {
+  //
+  //               return geolocation.getLocation().then(function (data) {
+  //
+  //                   return data.coords;
+  //
+  //
+  //               }, function (error) {
+  //                   $log.error("Could not get location: " + error);
+  //                   console.log("Could not get location: " + error);
+  //               });
+  //
+  //           }
+  //       };
+  //
+  // return service;
+  // })

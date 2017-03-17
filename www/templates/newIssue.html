@@ -1,5 +1,33 @@
 <ion-view view-title="New Issue">
   <ion-content>
-    <p>Hello! This is the issue creation screen.</p>
+	 <div>
+	      <form name="createIssue" ng-submit="submit()">
+	        <div class="list">
+	          <label class="item item-input">
+	            <span class="input-label">Type</span>
+	            <select name="issueTypeId" ng-model="issue.issueTypeId">
+	              <option ng-repeat="issueType in issueTypes" value="{{issueType.id}}">{{issueType.name}}</option>
+	            </select>
+	          </label>
+
+	          <label class="item item-input item-floating-label">
+	            <span class="input-label">Description</span>
+	            <input type="text" name="description" placeholder="Description" ng-model="issue.description">
+	          </label>
+	            <a class="item item-icon-left" href="#">
+	              <h1><i class="ion-android-camera"></i></h1>
+	            </a>
+	          <label class="item item-input item-floating-label">
+	            <span class="input-label">Longitude</span>
+	            <input type="text" name="lng" ng-model="issue.lng">
+	          </label>
+	          <label class="item item-input item-floating-label">
+	            <span class="input-label">Latitude</span>
+	            <input type="text" name="lat" ng-model="issue.lat">
+	          </label>
+	          </div>
+	        <input class="button positive" type="submit" name="submit" value="Upload"/>
+	      </form>
+	    </div>
   </ion-content>
 </ion-view>
