@@ -71,8 +71,7 @@ angular.module('citizen-engagement')
         //var string = "foo",
         var substring = "staff";
        // console.log(userRoleLogged.includes(substring));
-
-        if (userRoleLogged.includes(substring)){
+        if (userRoleLogged.indexOf(substring)>=0){
             $scope.userIsStaff = true;  
         }
         //console.log($scope.userIsStaff);
