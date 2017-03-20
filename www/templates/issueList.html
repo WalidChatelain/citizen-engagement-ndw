@@ -16,11 +16,8 @@
           </div>
 
           <div class="row">
-            <button class="button button-full button-positive" ui-sref="app.issueDetails({issueId:issue.id})">
-              <i class="button button-icon icon ion-log-in light"> View details </i>
-            </button>
+            <button class="button" ui-sref="app.issueDetails({issueId:issue.id})" type="button">View details</button>
           </div>
-
         </div>
         <p ng-if="issueCtrl.error" class="error">{{ issueCtrl.error }}</p>
         <ion-infinite-scroll ng-if="!noMoreItemsAvailable" on-infinite="loadMore()" distance="10%"></ion-infinite-scroll>

@@ -1,6 +1,7 @@
 <ion-view view-title="Issue Details">
   <ion-content>
     <!--<div ng-controller="allIssuesCtrl">-->
+    <div ng-controller="issueCtrl">
 
     
     <div class="row list">
@@ -22,13 +23,14 @@
 
       <div class="row list">
         <div class="col col-90" style="background-color: #0d0743;"><p style="color:white;">{{issue.description}}</p></div>
-        <a class="button button-icon icon ion-plus-circled positive"></a>
+        <a class="button button-icon icon ion-plus-circled"></a>
 
       </div>
       <div class="row list">
-        <div class="col col-90" style="background-color: #0d0743;"><h5 style="color:white;"><p  ng-repeat="tag in issue.tags" style="display: inline">{{tag}} </p> </h5>
-        </div>
-        <a class="button button-icon icon ion-plus-circled positive"></a>
+
+        <div class="col col-90" style="background-color: #0d0743;"><h5 style="color:white;"><p  ng-repeat="tag in issue.tags" style="display: inline">{{tag}} </p> </h5></div>
+        <a class="button button-icon icon ion-plus-circled"></a>
+
       </div>
 
         <div class="loginButton">
@@ -69,7 +71,7 @@
 
           <label ng-if="userIsStaff" class="item item-input">
               <span class="input-label">Quel type voulez-vous supprimer ?</span>
-              <select name="issueTypeName" ng-model="selected">
+              <select name="issueTypeName" ng-model="selectedType">
                 <option ng-repeat="issueType in issueTypes" value="{{issueType.id}}">{{issueType.name}}</option>
               </select>
             </label>
@@ -89,6 +91,6 @@
         </div>
         <p ng-if="issueCtrl.error" class="error">{{ issueCtrl.error }}</p>
         <ion-infinite-scroll ng-if="!noMoreCommentsAvailable && seeCommentsClick" on-infinite="issueCtrl.seeComments()" distance="10%"></ion-infinite-scroll>
-    
+    </div>
   </ion-content>
 </ion-view>

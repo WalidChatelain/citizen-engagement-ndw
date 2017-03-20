@@ -14,9 +14,12 @@
 	            <span class="input-label">Description</span>
 	            <input type="text" name="description" placeholder="Description" ng-model="issue.description">
 	          </label>
-	            <a class="item item-icon-left" href="#">
+
+	            <a class="item item-icon-left" ng-click='newIssueCtrl.takePicture()'>
 	              <h1><i class="ion-android-camera"></i></h1>
 	            </a>
+              <img ng-if='newIssueCtrl.pictureData' width='100%' ng-src='data:image/png;base64,{{ newIssueCtrl.pictureData }}' />
+
 	          <label class="item item-input item-floating-label">
 	            <span class="input-label">Longitude</span>
 	            <input type="text" name="lng" ng-model="issue.lng">
@@ -26,7 +29,9 @@
 	            <input type="text" name="lat" ng-model="issue.lat">
 	          </label>
 	          </div>
-	        <input class="button positive" type="submit" name="submit" value="Upload"/>
+	          <div id="uploadIssue">
+					<input class="button positive" type="submit" name="submit" value="Upload"/>
+	          </div>
 	      </form>
 	    </div>
   </ion-content>

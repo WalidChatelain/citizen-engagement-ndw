@@ -75,7 +75,7 @@ angular.module('citizen-engagement')
             url: apiUrl + '/issues/'+issueId+'?include=issueType'
         }).success(function(issue) {
 
-            $scope.issue = issue;
+    $scope.issue = issue;
 
         }).catch(function() {
 
@@ -187,11 +187,11 @@ angular.module('citizen-engagement')
         }
 
         $scope.issue.issueTypeHref = $scope.selected;
-        console.log($scope.selected);
+        //console.log($scope.selected);
 
         issueCtrl.deleteIssueType = function (){
             $scope.issue.issueTypeHref = $scope.issueTypeSelected;
-            console.log($scope.selected);
+            console.log($scope.selectedType);
             $http({
                 method: 'DELETE',
                 url: apiUrl + '/issueTypes/'
@@ -207,36 +207,11 @@ angular.module('citizen-engagement')
 
    
 
-    /*.controller("newIssueCtrl", function($scope, $http, apiUrl, $stateParams, GeolocService){
-        console.log('OKKKK');
-        $scope.loadIssueTypes = function () {
-            $scope.issue = {};
-            $http({
-                method: 'GET',
-                url: apiUrl + '/issueTypes/'
-            }).success(function (issueTypes) {
-                $scope.issueTypes = issueTypes;
-                GeolocService.locateUser().then(function (coords) {
-                    console.log(coords);
-                    $scope.issue.lng = coords.longitude;
-                    $scope.issue.lat = coords.latitude;
-                });
-            });
-        };
-        $scope.loadIssueTypes();
-        $scope.submit = function () {
-            $scope.issue.imgUrl = "http://cliparts.co/cliparts/8c6/oAK/8c6oAKjri.png";
-            console.log($scope.issue);
-            $http.post(apiUrl + '/issues/', $scope.issue).success(function(res) {
-                console.log(res);
-            })
-        };
-        });*/
 
-        .controller('newIssueCtrl', function($scope, $http, apiUrl, $stateParams, geolocation, $log) {
+angular.module('citizen-engagement').controller('newIssueCtrl', function(geolocation, $log, $scope, $http, apiUrl, $ionicPopup, CameraService) {
+var newIssueCtrl = this;
 
-            
-            $scope.loadIssueTypes = function () {
+$scope.loadIssueTypes = function () {
                 $scope.issue = {};
                     $http({
                         method: 'GET',
@@ -260,8 +235,11 @@ angular.module('citizen-engagement')
             })
 
             };
+
+
             $scope.loadIssueTypes();
             $scope.submit = function () {
+                console.log($scope.selected);
             $scope.issue.issueTypeHref = $scope.selected;
             $http({
                 method: 'POST',
@@ -272,74 +250,91 @@ angular.module('citizen-engagement')
                 console.log(res);
             })
         };
+
+        newIssueCtrl.takePicture = function() {
+    if (!CameraService.isSupported()) {
+      return $ionicPopup.alert({
+        title: 'Not supported',
+        template: 'You cannot use the camera on this platform'
+      });
+    }
+
+    CameraService.getPicture().then(function(result) {
+      $log.debug('Picture taken!');
+      newIssueCtrl.pictureData = result;
+    }).catch(function(err) {
+      $log.error('Could not get picture because: ' + err.message);
+    });
+  };
+
         });
 
-        angular.module('citizen-engagement').controller('MapCtrl', function($scope, mapboxSecret, leafletData) {
-          var mapCtrl = this;
-          var record = {
-            title: 'Lorem ipsum'
-          };
+  
 
-          var mapboxMapId = 'mapbox.satellite';
-          var mapboxAccessToken = mapboxSecret;
+angular.module('citizen-engagement').controller('MapCtrl', function($scope, mapboxSecret) {
+  var mapCtrl = this;
+  var record = {
+    title: 'Lorem ipsum'
+  };
+  var mapboxMapId = 'mapbox.satellite';
+  var mapboxAccessToken = mapboxSecret;
 
-          var mapboxTileLayerUrl = 'http://api.tiles.mapbox.com/v4/' + mapboxMapId;
-          mapboxTileLayerUrl = mapboxTileLayerUrl + '/{z}/{x}/{y}.png';
-          mapboxTileLayerUrl = mapboxTileLayerUrl + '?access_token=' + mapboxAccessToken;
+  var mapboxTileLayerUrl = 'http://api.tiles.mapbox.com/v4/' + mapboxMapId;
+  mapboxTileLayerUrl = mapboxTileLayerUrl + '/{z}/{x}/{y}.png';
+  mapboxTileLayerUrl = mapboxTileLayerUrl + '?access_token=' + mapboxAccessToken;
 
-          $scope.$on('leafletDirectiveMap.dragend', function(event, map){
-            console.log('Map was dragged');
-          });
-          $scope.$on('leafletDirectiveMarker.click', function(event, marker) {
-            var coords = marker.model.lng + '/' + marker.model.lat;
-            console.log('Marker at ' + coords + ' was clicked');
-          });
+  $scope.$on('leafletDirectiveMap.dragend', function(event, map){
+    console.log('Map was dragged');
+  });
+  $scope.$on('leafletDirectiveMarker.click', function(event, marker) {
+    var coords = marker.model.lng + '/' + marker.model.lat;
+    console.log('Marker at ' + coords + ' was clicked');
+  });
 
-          mapCtrl.defaults = {
-            tileLayer: mapboxTileLayerUrl
-          };
+  mapCtrl.defaults = {
+    tileLayer: mapboxTileLayerUrl
+  };
 
-          mapCtrl.markers=[];
-          mapCtrl.center = {
-            lat: 51.48,
-            lng: 0,
-            zoom: 14
-          };
-          mapCtrl.markers.push({
-            lat: 51.48,
-            lng: 0,
-            message: '<div ng-include="\'templates/message.html\'"/"/>',
-            getMessageScope: function() {
-              var scope = $scope.$new();
-              scope.record = record;
-              return scope;
-            }
-          });
+  mapCtrl.markers=[];
+  mapCtrl.center = {
+    lat: 51.48,
+    lng: 0,
+    zoom: 14
+  };
+  mapCtrl.markers.push({
+    lat: 51.48,
+    lng: 0,
+    icon: {
+      iconUrl: 'img/location2.png',
+      iconSize: [40, 50]
+    },
+    message: '<div ng-include="\'templates/message.html\'"/"/>',
+    getMessageScope: function() {
+      var scope = $scope.$new();
+      scope.record = record;
+      return scope;
+    }
+  });
+});
 
-          leafletData.getMap().then(function(map) {
-            map.invalidateSize();
-          });
-        });
-
-  //DEVRAIT ETRE DANS MAP.JS
-  // angular.module('citizen-engagement')
-  //        .controller('GeolocService', function (geolocation, $log) {
-  //       var service = {
-  //
-  //           locateUser: function () {
-  //
-  //               return geolocation.getLocation().then(function (data) {
-  //
-  //                   return data.coords;
-  //
-  //
-  //               }, function (error) {
-  //                   $log.error("Could not get location: " + error);
-  //                   console.log("Could not get location: " + error);
-  //               });
-  //
-  //           }
-  //       };
-  //
-  // return service;
-  // })
+angular.module('citizen-engagement').factory('CameraService', function($q) {
+  var service = {
+    isSupported: function() {
+      return navigator.camera !== undefined;
+    },
+    getPicture: function() {
+      var deferred = $q.defer();
+      var options = { // Return the raw base64 PNG data
+        destinationType: navigator.camera.DestinationType.DATA_URL,
+        correctOrientation: true
+      };
+      navigator.camera.getPicture(function(result) {
+        deferred.resolve(result);
+      }, function(err) {
+        deferred.reject(err);
+      }, options);
+      return deferred.promise;
+    }
+  };
+  return service;
+});
