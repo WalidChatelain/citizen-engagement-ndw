@@ -2,19 +2,20 @@
   <ion-content>
     <div ng-controller="allIssuesCtrl">
 
-        <div ng-repeat="issue in issues" class="list"  style="border-bottom: dashed 1px #0d0743; background-color: #FEFDF0; border-top: dashed 1px #0d0743;">
-          <div class="row">
-            <div class="col-19" style="overflow: hidden;"><img ng-src="{{issue.imageUrl}}" width="100px"></div>
-            <div class="col-21" style="padding-left: 5px; border-right: solid #0d0743 1px;"><h5>{{issue.issueType.name}}</h5></div>
-            <div class="col-40" style="padding-left: 5px; border-right: solid #0d0743 1px;"><p>{{issue.description}}</p></div>
-            <div class="col-20" style="padding-left: 5px;"><p> {{issue.state}}</p></div>
+        <div ng-repeat="issue in issues" class="list" ng-class-even="'green'">
+            <div class="issueImage">
+              <img ng-src="{{issue.imageUrl}}">
+            </div>
+            <div class="issueDescription" >
+              <h5>{{issue.issueType.name}}</h5>
+              <p>{{issue.description}}</p>
+              <p class="state"> {{issue.state}}</p>
+            </div>
+            <div class="details">
+              <i class="iconIssues ion-arrow-right-b" ui-sref="app.issueDetails({issueId:issue.id})"></i>
+            </div>
           </div>
-
-          <div class="row">
-            <button class="button" ui-sref="app.issueDetails({issueId:issue.id})" type="button">View details</button>
-          </div>
-        </div>
-        <ion-infinite-scroll ng-if="!noMoreItemsAvailable" on-infinite="loadMore()" distance="10%"></ion-infinite-scroll>
+        <ion-infinite-scroll ng-if="!noMoreItemsAvailable" on-infinite="loadMore()" ></ion-infinite-scroll>
       </div>
   </ion-content>
 </ion-view>
