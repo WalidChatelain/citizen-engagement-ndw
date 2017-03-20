@@ -202,7 +202,7 @@ angular.module('citizen-engagement')
         }
     })
 
-angular.module('citizen-engagement').controller('newIssueCtrl', function(geolocation, $log, $scope, $http, apiUrl, qimgUrl, qimgSecret, $ionicPopup, CameraService) {
+angular.module('citizen-engagement').controller('newIssueCtrl', function(geolocation, $q, $log, $scope, $http, $state, apiUrl, qimgUrl, qimgSecret, $ionicPopup, CameraService) {
 
           $scope.loadIssueTypes = function () {
                 $scope.issue = {};
@@ -233,7 +233,13 @@ angular.module('citizen-engagement').controller('newIssueCtrl', function(geoloca
             $scope.loadIssueTypes();
             $scope.submit = function () {
                 console.log($scope.selected);
-                return postImage().then(postIssue);
+                return postImage().then(postIssue).then(function() {
+                  $state.go("app.home");
+                  return $ionicPopup.alert({
+                  title: 'Not supported',
+                  template: 'You cannot use the camera on this platform'
+                  });
+                });
             };
 
           function postImage() {
@@ -263,7 +269,7 @@ angular.module('citizen-engagement').controller('newIssueCtrl', function(geoloca
 
         // Create the issue
         $scope.issue.issueTypeHref = $scope.selected;
-            $http({
+            return $http({
                   method: 'POST',
                   url: apiUrl + '/issues/',
                   data: $scope.issue

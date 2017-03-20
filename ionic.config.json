@@ -1,14 +1,14 @@
 {
   "name": "citizen-engagement-ndw-sidemenu",
-  "app_id": "8b060e71",
+  "app_id": "36cf61dc",
   "proxies": [
     {
       "path": "/api-proxy",
       "proxyUrl": "https://comem-citizen-engagement-2017i.herokuapp.com/api"
     },
     {
-  	  "path": "/qimg-api-proxy",
- 	  "proxyUrl": "https://comem-qimg.herokuapp.com/api"
-	}
+      "path": "/qimg-api-proxy",
+      "proxyUrl": "https://comem-qimg.herokuapp.com/api"
+    }
   ]
 }
