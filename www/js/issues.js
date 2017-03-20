@@ -4,9 +4,9 @@ angular.module('citizen-engagement')
 
     $scope.noMoreItemsAvailable = false;
     $scope.issues = [];
+    
     var i = 0;
-    var currentPage = 0
-
+    var currentPage = 0;
     //console.log('controller');
     $scope.loadMore = function() {
         //console.log('load more');
@@ -25,12 +25,50 @@ angular.module('citizen-engagement')
             $scope.noMoreItemsAvailable = true;
         }
         $scope.$broadcast('scroll.infiniteScrollComplete');
+        //$scope.loadIssueTypesFilter();
     };
+
+
+
+
 })
 
-    .controller("issueCtrl", function($scope, $http, apiUrl, $stateParams) {
+    .controller("issueCtrl", function($scope, $http, apiUrl, $stateParams, $cookies) {
+        var issueCtrl = this;
         var issueId = $stateParams.issueId;
-        var issueTypeName = $stateParams.issueTypeHref;
+        $scope.comments = [];
+        //var issueTypeName = $stateParams.issueTypeHref;
+        $scope.userIsStaff = false;
+        var userRoleLogged = $cookies.get('userRole');
+        console.log(userRoleLogged);
+        
+        //console.log(userRoleLogged);
+        $scope.noMoreCommentsAvailable = false;
+        $scope.seeCommentsClick = false;
+        var j = 0;
+        var currentPageComments = 0;
+
+        console.log('helllo');
+        
+        $scope.issue = {};
+        $http({
+            method: 'GET',
+            url: apiUrl + '/issueTypes/'
+        }).success(function (issueTypes) {
+
+        $scope.issueTypes = issueTypes;
+        console.log($scope.issueTypes);
+        });
+
+        //console.log($scope.issueTypeSelected);
+
+
+        if (userRoleLogged == 'staff'){
+            $scope.userIsStaff = true;
+            
+        }
+        console.log($scope.userIsStaff);
+        //var seeCommentsClick = false;
         //console.log(issueType);
         $http({
             method: 'GET',
@@ -39,9 +77,135 @@ angular.module('citizen-engagement')
 
             $scope.issue = issue;
 
-        });
+        }).catch(function() {
 
-})
+            // If an error occurs, hide the loading message and show an error message.
+           
+            issueCtrl.error = 'Can not get the issues';
+         });
+
+
+         issueCtrl.seeComments = function() {
+           $scope.seeCommentsClick = true;
+            //console.log(issueId);
+            
+            $http({
+                method: 'GET',
+                url: apiUrl + '/issues/'+issueId+'/comments?include=author&page='+ currentPageComments +'&pageSize=50'
+            }).success(function(comments) {
+                //$scope.comments = $scope.comments.concat(comments);
+                // Pour tester, il y a des commentaires ---> 58ca91368af7620011485cc6
+                //console.log(currentPageComments);
+                //console.log($scope.noMoreCommentsAvailable);
+                //console.log($scope.seeCommentsClick);
+                $scope.comments = comments;
+                console.log(comments.length);
+
+                currentPageComments++;
+
+                if (j == 2 || comments.length < 50) {
+                $scope.noMoreCommentsAvailable = true;
+                }
+                j++;
+                
+                $scope.$broadcast('scroll.infiniteScrollComplete');
+
+            }).catch(function() {
+
+            // If an error occurs, hide the loading message and show an error message.
+           
+            issueCtrl.error = 'Can not get the comments';
+    
+            });
+
+            
+  
+        };
+
+        issueCtrl.postComments = function() {
+
+            //console.log(issueId);
+            $http({
+                method: 'POST',
+                url: apiUrl + '/issues/'+issueId+'/comments',
+                data: issueCtrl.comment
+            }).success(function(comments) {
+   
+            });
+  
+        };
+
+        issueCtrl.manageIssues = function (){
+
+            var issueState =  $scope.issue.state;
+
+            if(issueState == "new" && issueCtrl.action.type == "start"){
+
+                $http({
+                method: 'POST',
+                url: apiUrl + '/issues/'+issueId+'/actions',
+                data: issueCtrl.action
+                }).success(function(actions) {
+     
+                });
+                
+            }else if ((issueState == "new" || issueState == "inProgress") && issueCtrl.action.type == "reject"){
+                $http({
+                method: 'POST',
+                url: apiUrl + '/issues/'+issueId+'/actions',
+                data: issueCtrl.action
+                }).success(function(actions) {
+     
+                });
+            }else if (issueState == "inProgress" && issueCtrl.action.type == "resolve"){
+
+                $http({
+                method: 'POST',
+                url: apiUrl + '/issues/'+issueId+'/actions',
+                data: issueCtrl.action
+                }).success(function(actions) {
+      
+                });
+
+
+            }else{
+                console.log('Vous ne respectez pas les conditions de transition des états');
+            }
+       
+           
+        };
+
+        issueCtrl.addIssueType = function (){
+            $http({
+                method: 'POST',
+                url: apiUrl + '/issueTypes/',
+                data: issueCtrl.issueType
+                }).success(function(issueTypes) {
+                    console.log('issueTypePossssstée');
+                });
+
+        }
+
+        $scope.issue.issueTypeHref = $scope.selected;
+        console.log($scope.selected);
+
+        issueCtrl.deleteIssueType = function (){
+            $scope.issue.issueTypeHref = $scope.issueTypeSelected;
+            console.log($scope.selected);
+            $http({
+                method: 'DELETE',
+                url: apiUrl + '/issueTypes/'
+                //data: issueCtrl.issueType
+                }).success(function(issueTypes) {
+                    console.log('issuetypeSupprimée');
+                });
+
+        }
+
+
+    })
+
+   
 
     /*.controller("newIssueCtrl", function($scope, $http, apiUrl, $stateParams, GeolocService){
         console.log('OKKKK');

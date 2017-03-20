@@ -2,7 +2,12 @@
   <ion-content>
     <div ng-controller="allIssuesCtrl">
 
-        <div ng-repeat="issue in issues" class="list"  style="border-bottom: dashed 1px #0d0743; background-color: #FEFDF0; border-top: dashed 1px #0d0743;">
+    <label class="item item-input">
+              <span class="input-label">Search</span>
+              <input ng-model="searchText">   
+    </label>
+
+        <div ng-repeat="issue in issues | filter:searchText" class="list"  style="border-bottom: dashed 1px #0d0743; background-color: #FEFDF0; border-top: dashed 1px #0d0743;">
           <div class="row">
             <div class="col-19" style="overflow: hidden;"><img ng-src="{{issue.imageUrl}}" width="100px"></div>
             <div class="col-21" style="padding-left: 5px; border-right: solid #0d0743 1px;"><h5>{{issue.issueType.name}}</h5></div>
@@ -17,6 +22,7 @@
           </div>
 
         </div>
+        <p ng-if="issueCtrl.error" class="error">{{ issueCtrl.error }}</p>
         <ion-infinite-scroll ng-if="!noMoreItemsAvailable" on-infinite="loadMore()" distance="10%"></ion-infinite-scroll>
       </div>
   </ion-content>

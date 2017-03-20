@@ -17,7 +17,7 @@ angular.module('citizen-engagement').service('AuthService', function(store) {
   return service;
 });
 
-angular.module('citizen-engagement').controller('LoginCtrl', function(apiUrl, AuthService, $http, $ionicHistory, $ionicLoading, $scope, $state) {
+angular.module('citizen-engagement').controller('LoginCtrl', function(apiUrl, AuthService, $http, $ionicHistory, $ionicLoading, $scope, $state, $cookies) {
   var loginCtrl = this;
 
   // The $ionicView.beforeEnter event happens every time the screen is displayed.
@@ -53,6 +53,11 @@ angular.module('citizen-engagement').controller('LoginCtrl', function(apiUrl, Au
       data: loginCtrl.user
     }).then(function(res) {
 
+
+      $cookies.put('userRole',res.data.user.roles);
+      //var userRoleLogged;
+      //userRoleLogged = $cookies.get('userRole');
+      //console.log(userRoleLogged);
       // If successful, give the token to the authentication service.
       AuthService.setAuthToken(res.data.token);
 
@@ -79,11 +84,7 @@ angular.module('citizen-engagement').controller('LoginCtrl', function(apiUrl, Au
 
   // Add the register function to the scope.
   loginCtrl.register = function() {
-    /*loginCtrl.user.firstname = "coucou";
-    loginCtrl.user.lastname = "test";
-    loginCtrl.user.phone = "123123123";*/
-    loginCtrl.user.roles = "citizen";
-
+    
     // Pas toucher ça, pour que le formulaire registration s'affiche
     loginCtrl.registrationEnable = true;
     //console.log(loginCtrl.registrationEnable);
@@ -101,6 +102,7 @@ angular.module('citizen-engagement').controller('LoginCtrl', function(apiUrl, Au
     // Make the request to retrieve or create the user.
     console.log(loginCtrl.registrationEnable);
     if (loginCtrl.registrationEnable && loginCtrl.user.firstname != null && loginCtrl.user.lastname != null && loginCtrl.user.name != null && loginCtrl.user.password != null){
+        loginCtrl.user.roles = "citizen";
         $http({
         method: 'POST',
         url: apiUrl + '/users',
@@ -130,17 +132,19 @@ angular.module('citizen-engagement').controller('LoginCtrl', function(apiUrl, Au
         loginCtrl.error = 'Could not register.';
       });
     }else{
-      console.log("ça passe pas");
+      console.log("Toutes les infos ne sont pas remplies");
     }
     
   };
 });
 
-angular.module('citizen-engagement').controller('LogoutCtrl', function(AuthService, $state) {
+
+angular.module('citizen-engagement').controller('LogoutCtrl', function(AuthService, $state, $cookies) {
   var logoutCtrl = this;
 
   logoutCtrl.logOut = function() {
     AuthService.unsetAuthToken();
+    $cookies.remove('userRole');
     $state.go('login');
   };
 });
@@ -152,7 +156,8 @@ angular.module('citizen-engagement').controller('AnyCtrl', function(AuthService,
       Authorization: 'Bearer ' + AuthService.authToken
     }
   }).then(function(res) {
-    // ...
+    /*$scope.user = res;
+    console.log(res);*/
   });
 })
 
