@@ -5,7 +5,7 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.controllers' is found in controllers.js
 
-angular.module('citizen-engagement', ['ionic', 'angular-storage','geolocation','leaflet-directive', 'infinite-scroll'])
+angular.module('citizen-engagement', ['ionic', 'angular-storage','geolocation','leaflet-directive', 'infinite-scroll', 'ngCookies'])
 
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
@@ -83,7 +83,7 @@ angular.module('citizen-engagement').config(function($stateProvider, $urlRouterP
         'menuContent': {
           templateUrl: 'templates/newIssue.html',
           controller: 'newIssueCtrl',
-          controllerAs: 'newIssueCtrl',
+          controllerAs: 'newIssueCtrl'
         }
       }
     })

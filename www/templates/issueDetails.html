@@ -1,7 +1,7 @@
 <ion-view view-title="Issue Details">
   <ion-content>
     <!--<div ng-controller="allIssuesCtrl">-->
-
+    <div>
     <div class="row list">
         <div class="col col-75" style="background-color: #0d0743;"><h4 style="color:white;">{{issue.issueType.name}}</h4></div>
         <div class="col" style="background-color: green;"><h4 style="color:white;">{{issue.state}}</h4></div>
@@ -25,9 +25,70 @@
 
       </div>
       <div class="row list">
+
         <div class="col col-90" style="background-color: #0d0743;"><h5 style="color:white;"><p  ng-repeat="tag in issue.tags" style="display: inline">{{tag}} </p> </h5></div>
         <a class="button button-icon icon ion-plus-circled"></a>
+
       </div>
+
+        <div class="loginButton">
+          <button class="button button-positive" ng-click="seeComments()">See comments</button>
+        </div>
+
+        <div class="loginButton">
+          <button class="button button-positive" ng-click="postComments()">Post comments</button>
+        </div>
+
+        <label class="item item-input">
+              <input type="text" placeholder="Text" ng-model="comment.text"/>
+        </label>
+
+        <div class="loginButton">
+          <button class="button button-positive" ng-if="userIsStaff" ng-click="manageIssues()">Manage issues</button>
+        </div>
+
+        <label class="item item-input">
+              <input type="text" ng-if="userIsStaff" placeholder="Reason" ng-model="action.reason"/>
+          </label>
+
+          <label class="item item-input">
+              <input type="text" ng-if="userIsStaff" placeholder="Type" ng-model="action.type"/>
+          </label>
+
+        <div class="loginButton">
+          <button class="button button-positive" ng-if="userIsStaff" ng-click="addIssueType()">Add an issue type</button>
+        </div>
+
+        <label class="item item-input">
+              <input type="text" ng-if="userIsStaff" placeholder="Name" ng-model="issueType.name"/>
+          </label>
+
+          <label class="item item-input">
+              <input type="text" ng-if="userIsStaff" placeholder="Description" ng-model="issueType.description"/>
+          </label>
+
+          <label ng-if="userIsStaff" class="item item-input">
+              <span class="input-label">Quel type voulez-vous supprimer ?</span>
+              <select name="issueTypeName" ng-model="data.selectedType" ng-change='test()'>
+                <option ng-repeat="issueType in issueTypes" value="{{issueType.id}}">{{issueType.name}}</option>
+              </select>
+            </label>
+
+        <div class="loginButton">
+          <button class="button button-positive" ng-if="userIsStaff" ng-click="deleteIssueType()">Delete the selected issue type</button>
+        </div>
+
+
+
+        <p> </p>
+        <div ng-repeat="comment in comments" class="list">
+          <div class="row">
+            <div > Auteur : {{comment.author.name}}</div>
+            <div> Commentaire : {{comment.text}}</div>
+          </div>
+        </div>
+        <p ng-if="issueCtrl.error" class="error">{{ issueCtrl.error }}</p>
+        <ion-infinite-scroll ng-if="!noMoreCommentsAvailable && seeCommentsClick" on-infinite="seeComments()" distance="10%"></ion-infinite-scroll>
     </div>
   </ion-content>
 </ion-view>

@@ -1,7 +1,10 @@
 <ion-view view-title="Issue List">
   <ion-content>
     <div ng-controller="allIssuesCtrl">
-
+      <label class="item item-input">
+                <span class="input-label">Search</span>
+                <input ng-model="searchText">
+      </label>
         <div ng-repeat="issue in issues" class="list" ng-class-even="'green'">
             <div class="issueImage">
               <img ng-src="{{issue.imageUrl}}">
@@ -15,6 +18,7 @@
               <i class="iconIssues ion-arrow-right-b" ui-sref="app.issueDetails({issueId:issue.id})"></i>
             </div>
           </div>
+        <p ng-if="issueCtrl.error" class="error">{{ issueCtrl.error }}</p>
         <ion-infinite-scroll ng-if="!noMoreItemsAvailable" on-infinite="loadMore()" ></ion-infinite-scroll>
       </div>
   </ion-content>
