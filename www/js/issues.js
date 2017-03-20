@@ -202,19 +202,13 @@ angular.module('citizen-engagement')
 
         };
 
-        $scope.test = function() {
-            console.log('issue type changed');
-            //console.log(issueCtrl.selectedType);
-        }
+        
     });
 
-   
 
+angular.module('citizen-engagement').controller('newIssueCtrl', function(geolocation, $q, $log, $scope, $http, $state, apiUrl, qimgUrl, qimgSecret, $ionicPopup, CameraService) {
 
-            angular.module('citizen-engagement').controller('newIssueCtrl', function(geolocation, $log, $scope, $http, apiUrl, $ionicPopup, CameraService) {
-            var newIssueCtrl = this;
-
-            $scope.loadIssueTypes = function () {
+          $scope.loadIssueTypes = function () {
                 $scope.issue = {};
                     $http({
                         method: 'GET',
@@ -237,40 +231,76 @@ angular.module('citizen-engagement')
                 });
             })
 
-            };
+          };
 
 
             $scope.loadIssueTypes();
             $scope.submit = function () {
                 console.log($scope.selected);
-                $scope.issue.issueTypeHref = $scope.selected;
-                $http({
-                    method: 'POST',
-                    url: apiUrl + '/issues/',
-                    data: $scope.issue
-
-                }).success(function(res) {
-                    console.log(res);
-                })
+                return postImage().then(postIssue).then(function() {
+                  $state.go("app.home");
+                  return $ionicPopup.alert({
+                  title: 'Issue created',
+                  template: 'Successfuly created'
+                  });
+                });
             };
 
-        newIssueCtrl.takePicture = function() {
-    if (!CameraService.isSupported()) {
-      return $ionicPopup.alert({
-        title: 'Not supported',
-        template: 'You cannot use the camera on this platform'
-      });
-    }
+          function postImage() {
+            if (!$scope.pictureData) {
+              // If no image was taken, return a promise resolved with "null"
+              return $q.when(null);
+            }
 
-    CameraService.getPicture().then(function(result) {
-      $log.debug('Picture taken!');
-      newIssueCtrl.pictureData = result;
-    }).catch(function(err) {
-      $log.error('Could not get picture because: ' + err.message);
-    });
-  };
+            // Upload the image to the qimg API
+            return $http({
+              method: 'POST',
+              url: qimgUrl + '/images',
+              headers: {
+                Authorization: 'Bearer ' + qimgSecret
+              },
+              data: {
+                data: $scope.pictureData
+              }
+            });
+          }
+        function postIssue(imageRes) {
 
-        });
+        // Use the image URL from the qimg API response (if any)
+        if (imageRes) {
+          $scope.issue.imageUrl = imageRes.data.url;
+        }
+
+        // Create the issue
+        $scope.issue.issueTypeHref = $scope.selected;
+            return $http({
+                  method: 'POST',
+                  url: apiUrl + '/issues/',
+                  data: $scope.issue
+
+              }).success(function(res) {
+                  console.log(res);
+          })
+        }
+
+
+        $scope.takePicture = function() {
+          if (!CameraService.isSupported()) {
+            return $ionicPopup.alert({
+              title: 'Not supported',
+              template: 'You cannot use the camera on this platform'
+            });
+          }
+
+          CameraService.getPicture({ quality: 50}).then(function(result) {
+            $log.debug('Picture taken!');
+            $scope.pictureData = result;
+          }).catch(function(err) {
+            $log.error('Could not get picture because: ' + err.message);
+          });
+        };
+
+});
 
   
 
@@ -341,3 +371,5 @@ angular.module('citizen-engagement').factory('CameraService', function($q) {
   };
   return service;
 });
+
+

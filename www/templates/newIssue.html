@@ -15,10 +15,10 @@
 	            <input type="text" name="description" placeholder="Description" ng-model="issue.description">
 	          </label>
 
-	            <a class="item item-icon-left" ng-click='newIssueCtrl.takePicture()'>
+	            <a class="item item-icon-left" ng-click='takePicture()'>
 	              <h1><i class="ion-android-camera"></i></h1>
 	            </a>
-              <img ng-if='newIssueCtrl.pictureData' width='100%' ng-src='data:image/png;base64,{{ newIssueCtrl.pictureData }}' />
+              <img ng-if='pictureData' width='100%' ng-src='data:image/png;base64,{{ pictureData }}' />
 
 	          <label class="item item-input item-floating-label">
 	            <span class="input-label">Longitude</span>
@@ -30,7 +30,7 @@
 	          </label>
 	          </div>
 	          <div id="uploadIssue">
-					<input class="button positive" type="submit" name="submit" value="Upload"/>
+					<input class="button" type="submit" name="submit" value="Upload"/>
 	          </div>
 	      </form>
 	    </div>
