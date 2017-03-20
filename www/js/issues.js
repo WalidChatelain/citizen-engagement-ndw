@@ -34,7 +34,8 @@ angular.module('citizen-engagement')
 })
 
     .controller("issueCtrl", function($scope, $http, apiUrl, $stateParams, $cookies) {
-        var issueCtrl = this;
+
+        //var issueCtrl = this;
         var issueId = $stateParams.issueId;
         $scope.comments = [];
         //var issueTypeName = $stateParams.issueTypeHref;
@@ -51,41 +52,44 @@ angular.module('citizen-engagement')
         console.log('helllo');
         
         $scope.issue = {};
+        $scope.comment = {};
+        $scope.data = {};
+        $scope.action = {};
+        $scope.issueType = {};
+
         $http({
             method: 'GET',
             url: apiUrl + '/issueTypes/'
         }).success(function (issueTypes) {
-
-        $scope.issueTypes = issueTypes;
-        console.log($scope.issueTypes);
+            $scope.issueTypes = issueTypes;
+            console.log($scope.issueTypes);
         });
 
         //console.log($scope.issueTypeSelected);
 
+        //var string = "foo",
+        //var string = "foo",
+        var substring = "staff";
+       // console.log(userRoleLogged.includes(substring));
 
-        if (userRoleLogged == 'staff'){
-            $scope.userIsStaff = true;
-            
+        if (userRoleLogged.includes(substring)){
+            $scope.userIsStaff = true;  
         }
-        console.log($scope.userIsStaff);
+        //console.log($scope.userIsStaff);
         //var seeCommentsClick = false;
         //console.log(issueType);
         $http({
             method: 'GET',
             url: apiUrl + '/issues/'+issueId+'?include=issueType'
         }).success(function(issue) {
-
-    $scope.issue = issue;
-
+            $scope.issue = issue;
         }).catch(function() {
-
             // If an error occurs, hide the loading message and show an error message.
-           
-            issueCtrl.error = 'Can not get the issues';
-         });
+            $scope.error = 'Can not get the issues';
+        });
 
 
-         issueCtrl.seeComments = function() {
+         $scope.seeComments = function() {
            $scope.seeCommentsClick = true;
             //console.log(issueId);
             
@@ -111,58 +115,53 @@ angular.module('citizen-engagement')
                 $scope.$broadcast('scroll.infiniteScrollComplete');
 
             }).catch(function() {
-
-            // If an error occurs, hide the loading message and show an error message.
-           
-            issueCtrl.error = 'Can not get the comments';
-    
-            });
-
-            
+                // If an error occurs, hide the loading message and show an error message.
+                $scope.error = 'Can not get the comments';
+            });  
   
         };
 
-        issueCtrl.postComments = function() {
+        $scope.postComments = function() {
 
             //console.log(issueId);
             $http({
                 method: 'POST',
                 url: apiUrl + '/issues/'+issueId+'/comments',
-                data: issueCtrl.comment
+                data: $scope.comment
             }).success(function(comments) {
-   
+                console.log('bordel');
             });
   
         };
 
-        issueCtrl.manageIssues = function (){
+        $scope.manageIssues = function (){
 
             var issueState =  $scope.issue.state;
 
-            if(issueState == "new" && issueCtrl.action.type == "start"){
+            if(issueState == "new" && $scope.action.type == "start"){
 
                 $http({
                 method: 'POST',
                 url: apiUrl + '/issues/'+issueId+'/actions',
-                data: issueCtrl.action
+                data: $scope.action
                 }).success(function(actions) {
      
                 });
                 
-            }else if ((issueState == "new" || issueState == "inProgress") && issueCtrl.action.type == "reject"){
+            }else if ((issueState == "new" || issueState == "inProgress") && $scope.action.type == "reject"){
                 $http({
                 method: 'POST',
                 url: apiUrl + '/issues/'+issueId+'/actions',
-                data: issueCtrl.action
+                data: $scope.action
                 }).success(function(actions) {
      
                 });
-            }else if (issueState == "inProgress" && issueCtrl.action.type == "resolve"){
+            }else if (issueState == "inProgress" && $scope.action.type == "resolve"){
 
                 $http({
                 method: 'POST',
                 url: apiUrl + '/issues/'+issueId+'/actions',
-                data: issueCtrl.action
+                data: $scope.action
                 }).success(function(actions) {
       
                 });
@@ -175,43 +174,47 @@ angular.module('citizen-engagement')
            
         };
 
-        issueCtrl.addIssueType = function (){
+        $scope.addIssueType = function (){
             $http({
                 method: 'POST',
                 url: apiUrl + '/issueTypes/',
-                data: issueCtrl.issueType
+                data: $scope.issueType
                 }).success(function(issueTypes) {
                     console.log('issueTypePossssstée');
                 });
 
-        }
+        };
 
-        $scope.issue.issueTypeHref = $scope.selected;
+        //$scope.issue.issueTypeHref = $scope.selectedType;
         //console.log($scope.selected);
 
-        issueCtrl.deleteIssueType = function (){
-            $scope.issue.issueTypeHref = $scope.issueTypeSelected;
-            console.log($scope.selectedType);
+        $scope.deleteIssueType = function (){
+            //console.log($scope);
+            //$scope.issue.issueTypeHref = $scope.selectedType;
+            console.log($scope.data.selectedType);
             $http({
                 method: 'DELETE',
-                url: apiUrl + '/issueTypes/'
+                url: apiUrl + '/issueTypes/' + $scope.data.selectedType
                 //data: issueCtrl.issueType
                 }).success(function(issueTypes) {
                     console.log('issuetypeSupprimée');
                 });
 
+        };
+
+        $scope.test = function() {
+            console.log('issue type changed');
+            //console.log(issueCtrl.selectedType);
         }
-
-
-    })
+    });
 
    
 
 
-angular.module('citizen-engagement').controller('newIssueCtrl', function(geolocation, $log, $scope, $http, apiUrl, $ionicPopup, CameraService) {
-var newIssueCtrl = this;
+            angular.module('citizen-engagement').controller('newIssueCtrl', function(geolocation, $log, $scope, $http, apiUrl, $ionicPopup, CameraService) {
+            var newIssueCtrl = this;
 
-$scope.loadIssueTypes = function () {
+            $scope.loadIssueTypes = function () {
                 $scope.issue = {};
                     $http({
                         method: 'GET',
@@ -240,16 +243,16 @@ $scope.loadIssueTypes = function () {
             $scope.loadIssueTypes();
             $scope.submit = function () {
                 console.log($scope.selected);
-            $scope.issue.issueTypeHref = $scope.selected;
-            $http({
-                method: 'POST',
-                url: apiUrl + '/issues/',
-                data: $scope.issue
+                $scope.issue.issueTypeHref = $scope.selected;
+                $http({
+                    method: 'POST',
+                    url: apiUrl + '/issues/',
+                    data: $scope.issue
 
-            }).success(function(res) {
-                console.log(res);
-            })
-        };
+                }).success(function(res) {
+                    console.log(res);
+                })
+            };
 
         newIssueCtrl.takePicture = function() {
     if (!CameraService.isSupported()) {

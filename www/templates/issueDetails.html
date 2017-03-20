@@ -1,7 +1,7 @@
 <ion-view view-title="Issue Details">
   <ion-content>
     <!--<div ng-controller="allIssuesCtrl">-->
-    <div ng-controller="issueCtrl">
+    <div>
 
     
     <div class="row list">
@@ -34,50 +34,50 @@
       </div>
 
         <div class="loginButton">
-          <button class="button button-positive" ng-click="issueCtrl.seeComments()">See comments</button>
+          <button class="button button-positive" ng-click="seeComments()">See comments</button>
         </div>
 
         <div class="loginButton">
-          <button class="button button-positive" ng-click="issueCtrl.postComments()">Post comments</button>
+          <button class="button button-positive" ng-click="postComments()">Post comments</button>
         </div>
 
         <label class="item item-input">
-              <input type="text" placeholder="Text" ng-model="issueCtrl.comment.text"/>
+              <input type="text" placeholder="Text" ng-model="comment.text"/>
         </label>
 
         <div class="loginButton">
-          <button class="button button-positive" ng-if="userIsStaff" ng-click="issueCtrl.manageIssues()">Manage issues</button>
+          <button class="button button-positive" ng-if="userIsStaff" ng-click="manageIssues()">Manage issues</button>
         </div>
 
         <label class="item item-input">
-              <input type="text" ng-if="userIsStaff" placeholder="Reason" ng-model="issueCtrl.action.reason"/>
+              <input type="text" ng-if="userIsStaff" placeholder="Reason" ng-model="action.reason"/>
           </label>
 
           <label class="item item-input">
-              <input type="text" ng-if="userIsStaff" placeholder="Type" ng-model="issueCtrl.action.type"/>
+              <input type="text" ng-if="userIsStaff" placeholder="Type" ng-model="action.type"/>
           </label>
 
         <div class="loginButton">
-          <button class="button button-positive" ng-if="userIsStaff" ng-click="issueCtrl.addIssueType()">Add an issue type</button>
+          <button class="button button-positive" ng-if="userIsStaff" ng-click="addIssueType()">Add an issue type</button>
         </div>
 
         <label class="item item-input">
-              <input type="text" ng-if="userIsStaff" placeholder="Name" ng-model="issueCtrl.issueType.name"/>
+              <input type="text" ng-if="userIsStaff" placeholder="Name" ng-model="issueType.name"/>
           </label>
 
           <label class="item item-input">
-              <input type="text" ng-if="userIsStaff" placeholder="Description" ng-model="issueCtrl.issueType.description"/>
+              <input type="text" ng-if="userIsStaff" placeholder="Description" ng-model="issueType.description"/>
           </label>
 
           <label ng-if="userIsStaff" class="item item-input">
               <span class="input-label">Quel type voulez-vous supprimer ?</span>
-              <select name="issueTypeName" ng-model="selectedType">
+              <select name="issueTypeName" ng-model="data.selectedType" ng-change='test()'>
                 <option ng-repeat="issueType in issueTypes" value="{{issueType.id}}">{{issueType.name}}</option>
               </select>
             </label>
 
         <div class="loginButton">
-          <button class="button button-positive" ng-if="userIsStaff" ng-click="issueCtrl.deleteIssueType()">Delete the selected issue type</button>
+          <button class="button button-positive" ng-if="userIsStaff" ng-click="deleteIssueType()">Delete the selected issue type</button>
         </div>
 
           
@@ -90,7 +90,7 @@
           </div>
         </div>
         <p ng-if="issueCtrl.error" class="error">{{ issueCtrl.error }}</p>
-        <ion-infinite-scroll ng-if="!noMoreCommentsAvailable && seeCommentsClick" on-infinite="issueCtrl.seeComments()" distance="10%"></ion-infinite-scroll>
+        <ion-infinite-scroll ng-if="!noMoreCommentsAvailable && seeCommentsClick" on-infinite="seeComments()" distance="10%"></ion-infinite-scroll>
     </div>
   </ion-content>
 </ion-view>

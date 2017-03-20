@@ -83,7 +83,7 @@ angular.module('citizen-engagement').config(function($stateProvider, $urlRouterP
         'menuContent': {
           templateUrl: 'templates/newIssue.html',
           controller: 'newIssueCtrl',
-          controllerAs: 'newIssueCtrl',
+          controllerAs: 'newIssueCtrl'
         }
       }
     })
