@@ -204,7 +204,7 @@ angular.module('citizen-engagement')
         
     });
 
-
+//Create a new issue
 angular.module('citizen-engagement').controller('newIssueCtrl', function(geolocation, $q, $log, $scope, $http, $state, apiUrl, qimgUrl, qimgSecret, $ionicPopup, CameraService) {
 
           $scope.loadIssueTypes = function () {
@@ -301,54 +301,7 @@ angular.module('citizen-engagement').controller('newIssueCtrl', function(geoloca
 
 });
 
-  
-
-angular.module('citizen-engagement').controller('MapCtrl', function($scope, mapboxSecret) {
-  var mapCtrl = this;
-  var record = {
-    title: 'Lorem ipsum'
-  };
-  var mapboxMapId = 'mapbox.satellite';
-  var mapboxAccessToken = mapboxSecret;
-
-  var mapboxTileLayerUrl = 'http://api.tiles.mapbox.com/v4/' + mapboxMapId;
-  mapboxTileLayerUrl = mapboxTileLayerUrl + '/{z}/{x}/{y}.png';
-  mapboxTileLayerUrl = mapboxTileLayerUrl + '?access_token=' + mapboxAccessToken;
-
-  $scope.$on('leafletDirectiveMap.dragend', function(event, map){
-    console.log('Map was dragged');
-  });
-  $scope.$on('leafletDirectiveMarker.click', function(event, marker) {
-    var coords = marker.model.lng + '/' + marker.model.lat;
-    console.log('Marker at ' + coords + ' was clicked');
-  });
-
-  mapCtrl.defaults = {
-    tileLayer: mapboxTileLayerUrl
-  };
-
-  mapCtrl.markers=[];
-  mapCtrl.center = {
-    lat: 51.48,
-    lng: 0,
-    zoom: 14
-  };
-  mapCtrl.markers.push({
-    lat: 51.48,
-    lng: 0,
-    icon: {
-      iconUrl: 'img/location2.png',
-      iconSize: [40, 50]
-    },
-    message: '<div ng-include="\'templates/message.html\'"/"/>',
-    getMessageScope: function() {
-      var scope = $scope.$new();
-      scope.record = record;
-      return scope;
-    }
-  });
-});
-
+//Taking picture with an IOS or Android device
 angular.module('citizen-engagement').factory('CameraService', function($q) {
   var service = {
     isSupported: function() {
@@ -371,4 +324,61 @@ angular.module('citizen-engagement').factory('CameraService', function($q) {
   return service;
 });
 
+  //Display all the issues on the map
+ angular.module('citizen-engagement').controller("MapCtrl", function($scope, mapboxSecret, $http, apiUrl, geolocation) {
+  var mapCtrl = this;
+  var mapboxMapId = 'mapbox.satellite';
+  var mapboxAccessToken = mapboxSecret;
 
+  var mapboxTileLayerUrl = 'http://api.tiles.mapbox.com/v4/' + mapboxMapId;
+  mapboxTileLayerUrl = mapboxTileLayerUrl + '/{z}/{x}/{y}.png';
+  mapboxTileLayerUrl = mapboxTileLayerUrl + '?access_token=' + mapboxAccessToken;
+        mapCtrl.center = {
+              lat: 51.48,
+              lng: 0,
+              zoom: 15
+        };
+        mapCtrl.markers = [];
+        geolocation.getLocation().then(function (data) {
+          console.log("position  found");
+            mapCtrl.center = {
+                lat: data.coords.latitude,
+                lng: data.coords.longitude,
+                zoom: 15
+            };
+                mapCtrl.markers.push({
+                    lat: data.coords.latitude,
+                    lng: data.coords.longitude,
+                    message: '<p>You are here! </p>',
+                    getMessageScope: function() {
+                        var scope = $scope.$new();
+                        scope.issue = issue;
+                        return scope;
+                    }
+                });
+        }).catch(function(error) {
+          console.log(error);
+        });
+
+        $http({
+            method: 'GET',
+            url: apiUrl + '/issues',
+        }).success(function(issues) {
+            angular.forEach(issues, function(issue) {
+                mapCtrl.markers.push({
+                    lat: issue.location.coordinates[1],
+                    lng: issue.location.coordinates[0],
+                    icon: {
+                      iconUrl: 'img/location2.png',
+                      iconSize: [40, 50]
+                    },
+                    message: '<p>{{issue.description}}</p><img src="{{issue.imageUrl}}" width="200px"/>',
+                    getMessageScope: function() {
+                        var scope = $scope.$new();
+                        scope.issue = issue;
+                        return scope;
+                    }
+                });
+            });
+        });
+    })
