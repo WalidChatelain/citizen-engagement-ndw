@@ -1,58 +1,73 @@
-# Batman City Cleaner app pour le cours d'application mobile
-![Image of BTC](http://i.imgur.com/18Rg4u4.png)
+# MeowCitizen Engagement App dans le cadre du cours AppMob 2017 - HEIG
 
-Ceci est une application citoyenne, permettant à tout le monde de pouvoir combrattre le crime efficacement.
+![Image of BTC](http://i.imgur.com/ZZo5Bh1.png)
 
-> One day, there will be no pain, no loss, no crime. Because of me, because I fight. For you. One day, I will win.
-<cite>Batman, 2004</cite>
+Ceci est une application permettant à tous les citoyens d'aider à sauver les chats bloqués dans les arbes, blessés ou perdus.
+
+Avec cette application disponible sur IOS et Android gratuitement,
 
 **Vous pourrez**:
 * Créer un compte
-* Voir la carte générale des problèmes qu'il y a
-* Avoir la liste complète des problèmes existants et les trier selon      vos critères
-* Soumettre un problème
+* Voir sur la carte tous les pauvres chats qui nécessitent de l'aide
+* Avoir la liste complète des problèmes et les trier selon vos critères de recherche
+* Avoir accès aux détails d'un problème afin de connaître son état, sa date de création, etc..
+* Reporter un problème que vous avez vu
 * Commenter un problème
 
+## Pour vous enregistrer
+
+C'est très facile! Nous avons simplement besoin d'un nom d'utilisateur, de votre nom et prénom ainsi que d'un mot de passe que vous pourrez choisir à votre guise. Ceci est totalement optionel, mais si vous désirez être contacter en cas de besoin, vous pourrez également fournir votre numéro de téléphone qui sera stocker de manière totalement confidentielle.
+
+![Imgur](http://i.imgur.com/u43DCxx.png)
+
 ## Pour vous logger
-Rien de plus simple. Un nom et un prénom suffisent. Vous n'aurez pas besoin de vous tracasser à retenir un mot de passe ou à nous fournir d'autres informations que vous ne voudriez pas divulguer.
+
+Il vous suffira de rentrer votre nom d'utilisateur et votre mot de passe personnel. Afin de rendre votre expérience plus agréable, notre application se souviendra de vous et ne vous redemandera pas de vous logger tant que vous ne vous delogger pas manuellement!
+
+![Imgur](http://i.imgur.com/2raXsoD.png)
 
 ## Une fois loggé
 
-Vous aurez accès aux trois fonctionnalités principales. La navigation est très simple et est facilement compréhensible par tout le monde.
+Vous aurez accès à la map avec un curseur indiquant votre posisition (il vous faut activer la géolocalisation sur votre smartphone) ainsi qu'aux problèmes proches de vous symbolisés par des icones de chat.
 
-![Imgur](http://i.imgur.com/6eHOjbM.jpg)
+![Imgur](http://i.imgur.com/ah1n2Pj.png)
 
-### New Issue
+### Menu déroulant
 
-Cette page permet de poster un nouveau problème, il est à noter que dans cette version de l'application vous ne pouvez pas encore choisir où vous vous trouvez. Votre téléphone est géolocalisé et ce sont ces informations qui sont utilisées.
+En cliquant sur l'icone de menu en haut à gauche, vous accéderez au menu de l'application. Depuis ce menu,
+**Vous accéderez**:
+* A votre profil personnel
+* A la liste des problèmes
+* A nos conditions d'utilisations
+* Au bouton permettant de vous deloggez
 
-![Imgur](http://i.imgur.com/H7llbaG.jpg)
+![Imgur](http://i.imgur.com/U41MUQs.png)
 
-### Issue Map
+### Nouveau problème
 
-Une carte centrée sur votre géolocation de tous les problèmes
+Cette page vous permettra de poster un nouveau problème qui sera automatiquement géolocalisé en utilisant les données fournies par votre smartphone.
+En créant un nouveau problème, vous aurez la possibilité de choisir un type, de décrire le problème et de prendre une photo afin de mieux illustrer la situation.
 
-![Imgur](http://i.imgur.com/Y4Fab4T.jpg)
+![Imgur](http://i.imgur.com/6WAnLUz.png)
 
- ### Issue list
+ ### Liste des problèmes
 
- ![Imgur](http://i.imgur.com/H1BPq8D.jpg)
+Vous trouverez ici la liste complète des problèmes stockées dans notre base de données. Vous aurez également la possibilité de trier les problèmes à l'aide d'une barre de recherche.
 
- La liste de tous les problèmes stockés dans notre base de données. Dans le futur un système de tri va être instauré pour faciliter l'utilisation de la liste des problèmes.
+![Imgur](http://i.imgur.com/0Yi147K.png)
 
- #### One Issue
- Quand vous êtes sur la liste de tous les problèmes vous pouvez cliquer sur cette image:
+ ### Détails d'un problème
 
- et vous aurez accès à une vue plus détaillée du problème
+En cliquant sur la flèche noir à droite d'un problème, vous accéderez aux détails de ce problème. Sur cette page, vous pourrez également poster des commentaires.
+Les utilisateurs ayant le rôle de staff auront la possibilité d'éditer les détails des problèmes et de créer des nouveaux types afin de mieux classer les problèmes.
 
- ![Imgur](http://i.imgur.com/dBqd5rJ.jpg)
+![Imgur](http://i.imgur.com/0Yi147K.png)
 
-
-## Il reste à implémenter
+## Implémentations futures 
 
 - La possibilité de choisir son emplacement sur la carte quand on poste un problème
-- Un système de filtre sur toutes les problèmes
-- Pouvoir uploader la photo depuis son téléphone
-- Une page pour l'utilisateur pour qu'il puisse avoir l'historique des problèmes qu'il a posté
-- Une interface administration pour les fonctionnalités staff
-- Pouvoir poster un commentaire sur un problème
+- Filtrer les problèmes sur un rayon de X autour de la personne selon ses envies
+- Afficher la liste des problèmes d'un utilisateur sur son profil personnel
+- Une interface administration pour les fonctionnalités staff plus propre
+- Revoir les conditions d'utilisations et leur mise en page
+
