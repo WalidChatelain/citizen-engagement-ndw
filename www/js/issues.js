@@ -1,5 +1,6 @@
 angular.module('citizen-engagement')
 
+// Controller permettant de loader toutes les issues 
 .controller("allIssuesCtrl", function($scope, $http, apiUrl) {
 
     $scope.noMoreItemsAvailable = false;
@@ -7,16 +8,16 @@ angular.module('citizen-engagement')
     
     var i = 0;
     var currentPage = 0;
-    //console.log('controller');
-    $scope.loadMore = function() {
-        //console.log('load more');
 
+    $scope.loadMore = function() {
         i++;
         $http({
             method: 'GET',
             url: apiUrl + '/issues?include=issueType&page=' + currentPage
         }).success(function(issues) {
             $scope.issues = $scope.issues.concat(issues);
+        }).catch(function() {
+            $scope.error = 'Could not get the issues';
         });
 
         currentPage++;
@@ -25,7 +26,6 @@ angular.module('citizen-engagement')
             $scope.noMoreItemsAvailable = true;
         }
         $scope.$broadcast('scroll.infiniteScrollComplete');
-        //$scope.loadIssueTypesFilter();
     };
 
 
@@ -33,209 +33,213 @@ angular.module('citizen-engagement')
 
 })
 
-    .controller("issueCtrl", function($scope, $http, apiUrl, $stateParams, $cookies) {
+// Controller permettant de géréer les détails des issues
+.controller("issueCtrl", function($scope, $http, apiUrl, $stateParams, $cookies, $ionicPopup) {
 
-        //var issueCtrl = this;
-        var issueId = $stateParams.issueId;
-        $scope.comments = [];
-        //var issueTypeName = $stateParams.issueTypeHref;
-        $scope.userIsStaff = false;
-        var userRoleLogged = $cookies.get('userRole');
-        console.log(userRoleLogged);
-        
-        //console.log(userRoleLogged);
-        $scope.noMoreCommentsAvailable = false;
-        $scope.seeCommentsClick = false;
-        var j = 0;
-        var currentPageComments = 0;
+    var issueId = $stateParams.issueId;
+    $scope.comments = [];
+    $scope.userIsStaff = false;
+    var userRoleLogged = $cookies.get('userRole');
+    console.log(userRoleLogged);
+    
+    $scope.noMoreCommentsAvailable = false;
+    $scope.seeCommentsClick = false;
+    var j = 0;
+    var currentPageComments = 0;
 
-        console.log('helllo');
-        
-        $scope.issue = {};
-        $scope.comment = {};
-        $scope.data = {};
-        $scope.action = {};
-        $scope.issueType = {};
+    $scope.issue = {};
+    $scope.comment = {};
+    $scope.data = {};
+    $scope.action = {};
+    $scope.issueType = {};
 
-        $http({
-            method: 'GET',
-            url: apiUrl + '/issueTypes/'
-        }).success(function (issueTypes) {
-            $scope.issueTypes = issueTypes;
-            console.log($scope.issueTypes);
-        });
-
-        //console.log($scope.issueTypeSelected);
-
-        //var string = "foo",
-        //var string = "foo",
-        var substring = "staff";
-       // console.log(userRoleLogged.includes(substring));
-        if (userRoleLogged.indexOf(substring)>=0){
-            $scope.userIsStaff = true;  
-        }
-        //console.log($scope.userIsStaff);
-        //var seeCommentsClick = false;
-        //console.log(issueType);
-        $http({
-            method: 'GET',
-            url: apiUrl + '/issues/'+issueId+'?include=issueType'
-        }).success(function(issue) {
-            $scope.issue = issue;
-        }).catch(function() {
-            // If an error occurs, hide the loading message and show an error message.
-            $scope.error = 'Can not get the issues';
-        });
-
-
-         $scope.seeComments = function() {
-           $scope.seeCommentsClick = true;
-            //console.log(issueId);
-            
-            $http({
-                method: 'GET',
-                url: apiUrl + '/issues/'+issueId+'/comments?include=author&page='+ currentPageComments +'&pageSize=50'
-            }).success(function(comments) {
-                //$scope.comments = $scope.comments.concat(comments);
-                // Pour tester, il y a des commentaires ---> 58ca91368af7620011485cc6
-                //console.log(currentPageComments);
-                //console.log($scope.noMoreCommentsAvailable);
-                //console.log($scope.seeCommentsClick);
-                $scope.comments = comments;
-                console.log(comments.length);
-
-                currentPageComments++;
-
-                if (j == 2 || comments.length < 50) {
-                $scope.noMoreCommentsAvailable = true;
-                }
-                j++;
-                
-                $scope.$broadcast('scroll.infiniteScrollComplete');
-
-            }).catch(function() {
-                // If an error occurs, hide the loading message and show an error message.
-                $scope.error = 'Can not get the comments';
-            });  
-  
-        };
-
-        $scope.postComments = function() {
-
-            //console.log(issueId);
-            $http({
-                method: 'POST',
-                url: apiUrl + '/issues/'+issueId+'/comments',
-                data: $scope.comment
-            }).success(function(comments) {
-                console.log('bordel');
-            });
-  
-        };
-
-        $scope.manageIssues = function (){
-
-            var issueState =  $scope.issue.state;
-
-            if(issueState == "new" && $scope.action.type == "start"){
-
-                $http({
-                method: 'POST',
-                url: apiUrl + '/issues/'+issueId+'/actions',
-                data: $scope.action
-                }).success(function(actions) {
-     
-                });
-                
-            }else if ((issueState == "new" || issueState == "inProgress") && $scope.action.type == "reject"){
-                $http({
-                method: 'POST',
-                url: apiUrl + '/issues/'+issueId+'/actions',
-                data: $scope.action
-                }).success(function(actions) {
-     
-                });
-            }else if (issueState == "inProgress" && $scope.action.type == "resolve"){
-
-                $http({
-                method: 'POST',
-                url: apiUrl + '/issues/'+issueId+'/actions',
-                data: $scope.action
-                }).success(function(actions) {
-      
-                });
-
-
-            }else{
-                console.log('Vous ne respectez pas les conditions de transition des états');
-            }
-       
-           
-        };
-
-        $scope.addIssueType = function (){
-            $http({
-                method: 'POST',
-                url: apiUrl + '/issueTypes/',
-                data: $scope.issueType
-                }).success(function(issueTypes) {
-                    console.log('issueTypePossssstée');
-                });
-
-        };
-
-        //$scope.issue.issueTypeHref = $scope.selectedType;
-        //console.log($scope.selected);
-
-        $scope.deleteIssueType = function (){
-            //console.log($scope);
-            //$scope.issue.issueTypeHref = $scope.selectedType;
-            console.log($scope.data.selectedType);
-            $http({
-                method: 'DELETE',
-                url: apiUrl + '/issueTypes/' + $scope.data.selectedType
-                //data: issueCtrl.issueType
-                }).success(function(issueTypes) {
-                    console.log('issuetypeSupprimée');
-                });
-
-        };
-
-        
+    $http({
+        method: 'GET',
+        url: apiUrl + '/issueTypes/'
+    }).success(function (issueTypes) {
+        $scope.issueTypes = issueTypes;
+        console.log($scope.issueTypes);
     });
 
-//Create a new issue
+    var substring = "staff";
+    if (userRoleLogged.indexOf(substring)>=0){
+        $scope.userIsStaff = true;  
+    }
+
+    $http({
+        method: 'GET',
+        url: apiUrl + '/issues/'+issueId+'?include=issueType'
+    }).success(function(issue) {
+        $scope.issue = issue;
+    }).catch(function() {
+        // If an error occurs, hide the loading message and show an error message.
+        $scope.error = 'Can not get the issues';
+    });
+
+    // Fonction appelée lorsqu'on clique sur le bouton see comments dans les issueDetails
+     $scope.seeComments = function() {
+       $scope.seeCommentsClick = true;
+        $http({
+            method: 'GET',
+            url: apiUrl + '/issues/'+issueId+'/comments?include=author&page='+ currentPageComments +'&pageSize=50'
+        }).success(function(comments) {
+           
+            $scope.comments = comments;
+            console.log(comments.length);
+
+            currentPageComments++;
+
+            if (j == 2 || comments.length < 50) {
+                $scope.noMoreCommentsAvailable = true;
+            }
+            j++;
+            
+            $scope.$broadcast('scroll.infiniteScrollComplete');
+
+        }).catch(function() {
+            $scope.error = 'Can not get the comments';
+        });  
+
+    };
+
+    // Fonction appelée lorsqu'on clique sur le bouton post comment dans les issueDetails
+    $scope.postComments = function() {
+
+        $http({
+            method: 'POST',
+            url: apiUrl + '/issues/'+issueId+'/comments',
+            data: $scope.comment
+        }).success(function(comments) {
+            $ionicPopup.alert({
+              title: 'Comment',
+              template: 'Comment posted'
+              });
+
+        }).catch(function() {
+            // If an error occurs, hide the loading message and show an error message.
+            $scope.error = 'Can not post the comment';
+        });  
+
+    };
+
+    // Fonction qui permet de changer l'état d'une issue
+    $scope.manageIssues = function (){
+
+        var issueState =  $scope.issue.state;
+
+        if(issueState == "new" && $scope.action.type == "start"){
+
+            $http({
+            method: 'POST',
+            url: apiUrl + '/issues/'+issueId+'/actions',
+            data: $scope.action
+            }).success(function(actions) {
+                $ionicPopup.alert({
+              title: 'State',
+              template: 'State changed'
+              });
+ 
+            });
+            
+        }else if ((issueState == "new" || issueState == "inProgress") && $scope.action.type == "reject"){
+            $http({
+            method: 'POST',
+            url: apiUrl + '/issues/'+issueId+'/actions',
+            data: $scope.action
+            }).success(function(actions) {
+                $ionicPopup.alert({
+              title: 'State',
+              template: 'State changed'
+              });
+            });
+        }else if (issueState == "inProgress" && $scope.action.type == "resolve"){
+
+            $http({
+            method: 'POST',
+            url: apiUrl + '/issues/'+issueId+'/actions',
+            data: $scope.action
+            }).success(function(actions) {
+                $ionicPopup.alert({
+                  title: 'State',
+                  template: 'State changed'
+                });
+            });
+
+
+        }else{
+            console.log('Vous ne respectez pas les conditions de transition des états');
+        }
+   
+       
+    };
+
+    // Fonction permettant d'ajouter un issueType, seulement si l'user est staff
+    $scope.addIssueType = function (){
+        $http({
+            method: 'POST',
+            url: apiUrl + '/issueTypes/',
+            data: $scope.issueType
+            }).success(function(issueTypes) {
+                $ionicPopup.alert({
+                    title: 'Issue Type',
+                    template: 'Issue Type added'
+                });
+            }).catch(function() {
+                $scope.error = 'Can not post the new issue type';
+                 
+                });  
+
+    };
+
+    // Fonction qui permet de supprimer un issue type, seulement pour users staff
+    $scope.deleteIssueType = function (){
+        console.log($scope.data.selectedType);
+        $http({
+            method: 'DELETE',
+            url: apiUrl + '/issueTypes/' + $scope.data.selectedType
+            }).success(function(issueTypes) {
+                $ionicPopup.alert({
+                    title: 'Issue Type',
+                    template: 'Issue Type deleted'
+                });
+            });
+
+    };
+
+    
+});
+
+// Create a new issue
 angular.module('citizen-engagement').controller('newIssueCtrl', function(geolocation, $q, $log, $scope, $http, $state, apiUrl, qimgUrl, qimgSecret, $ionicPopup, CameraService) {
 
+        // Fonction permettant de charger les types d'issues
           $scope.loadIssueTypes = function () {
                 $scope.issue = {};
                     $http({
                         method: 'GET',
                         url: apiUrl + '/issueTypes/'
                     }).success(function (issueTypes) {
+                    $scope.issueTypes = issueTypes;
+                    geolocation.getLocation().then(function(data){
+                        var coor = [data.coords.latitude, data.coords.longitude];
 
-                $scope.issueTypes = issueTypes;
+                        $scope.issue.location = {
+                            type: 'Point',
+                            coordinates: coor
+                        };
+                    }).catch(function(err) {
 
-                geolocation.getLocation().then(function(data){
-
-                    var coor = [data.coords.latitude, data.coords.longitude];
-
-                    $scope.issue.location = {
-                        type: 'Point',
-                        coordinates: coor
-                    };
-                    
-                }).catch(function(err) {
                     $log.error('Could not get location because: ' + err.message);
                 });
             })
 
           };
 
-
             $scope.loadIssueTypes();
+
+            // Fonction appelée lorsque on poste une nouvelle issue
             $scope.submit = function () {
-                console.log($scope.selected);
+                //console.log($scope.selected);
                 return postImage().then(postIssue).then(function() {
                   $state.go("app.home");
                   return $ionicPopup.alert({
@@ -263,6 +267,8 @@ angular.module('citizen-engagement').controller('newIssueCtrl', function(geoloca
               }
             });
           }
+
+        // Fonction qui poste l'issue
         function postIssue(imageRes) {
 
         // Use the image URL from the qimg API response (if any)
@@ -279,7 +285,8 @@ angular.module('citizen-engagement').controller('newIssueCtrl', function(geoloca
 
               }).success(function(res) {
                   console.log(res);
-          })
+                   
+                })
         }
 
 
@@ -301,7 +308,7 @@ angular.module('citizen-engagement').controller('newIssueCtrl', function(geoloca
 
 });
 
-//Taking picture with an IOS or Android device
+// Taking picture with an IOS or Android device
 angular.module('citizen-engagement').factory('CameraService', function($q) {
   var service = {
     isSupported: function() {
@@ -360,9 +367,10 @@ angular.module('citizen-engagement').factory('CameraService', function($q) {
           console.log(error);
         });
 
+        //console.log($scope.issues);
         $http({
             method: 'GET',
-            url: apiUrl + '/issues',
+            url: apiUrl + '/issues?pageSize=50'
         }).success(function(issues) {
             angular.forEach(issues, function(issue) {
                 mapCtrl.markers.push({
@@ -380,5 +388,6 @@ angular.module('citizen-engagement').factory('CameraService', function($q) {
                     }
                 });
             });
+
         });
     })
