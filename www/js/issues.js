@@ -221,7 +221,7 @@ angular.module('citizen-engagement').controller('newIssueCtrl', function(geoloca
                     }).success(function (issueTypes) {
                     $scope.issueTypes = issueTypes;
                     geolocation.getLocation().then(function(data){
-                        var coor = [data.coords.latitude, data.coords.longitude];
+                        var coor = [data.coords.longitude, data.coords.latitude];
 
                         $scope.issue.location = {
                             type: 'Point',
