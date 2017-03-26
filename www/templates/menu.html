@@ -16,8 +16,8 @@
     <ion-content>
       <ion-list>
         <ion-item menu-close ui-sref='app.home' class="sideMenu">
-          <img src="img/user.jpg"> 
-          <p id="menuText" ng-controller="LoginCtrl as loginCtrl">{{user.name}}</p>
+          <img src="img/user.jpg">
+            <p id="menuText" ng-controller="LoginCtrl as loginCtrl">{{user.name}}</p>
         </ion-item>
         <ion-item menu-close ui-sref='app.home' class="sideMenu">
           <i class="icon ion-home"></i>
@@ -30,10 +30,6 @@
         <ion-item menu-close ui-sref='app.issueList' class="sideMenu">
           <i class="icon ion-settings"></i>
           <p>Issues</p>
-        </ion-item>
-        <ion-item menu-close ui-sref='app.policy' class="sideMenu">
-          <i class="icon ion-document-text"></i>
-          <p>Policy</p>
         </ion-item>
         <ion-item menu-close ng-controller="LogoutCtrl as logoutCtrl" ng-click="logoutCtrl.logOut()" class="sideMenu">
           <i class="icon ion-log-out"></i>

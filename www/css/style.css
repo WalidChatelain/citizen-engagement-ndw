@@ -13,7 +13,7 @@
 	text-align: center;
 }
 
-.list label {
+.list {
 	margin-bottom: 10px;
 }
 
@@ -29,12 +29,14 @@
 .loginButton {
 	text-align: center;
 }
+.buttonLog{
+	margin-top: 30px;
+}
 
 .button {
 	background-color: #274042;
 	color: white;
 }
-
 .button:hover {
 	background-color: #088b96;
 	color: white;
@@ -64,13 +66,19 @@ side menu
 	height: 100px;
 	border-radius: 100%;
 	left: 75px;
+	margin-bottom: 10px;
+}
+.userCenter{
+	text-align: center;
+	width: 100%;
 }
 #menuText{
-	position: relative;
-	left: 110px;
 	color: #274042;
 	font-weight: bold;
 	font-size: 16px;
+	text-align: center;
+	left: 0px;
+	width: 100%;
 
 }
 
@@ -173,3 +181,72 @@ Issues List
 /**********************************************************
 Issues details
 **********************************************************/
+.contouring {
+	background-color: #274042;
+}
+
+.itemDetails {
+	background-color: #274042;
+}
+.itemDetails h2{
+	color: #EF4C25;
+}
+.orange a{
+	color: #EF4C25;
+}
+.itemDetails p{
+	color: white;
+}
+.imageDetails {
+	width: 50%;
+	margin-left: 25%;
+}
+.labelDetails{
+	display: inline-block;
+	border:  solid ;
+	border-radius: 3px;
+	width: 70%;
+}
+.buttonDetails{
+	display: inline-block;
+	float: right;
+	margin-right: 5%;
+}
+
+.detailsManager {
+	border:  grey solid ;
+	margin-top: 2%;
+	margin-left: 2%;
+	margin-right: 2%;
+}
+.buttonManager{
+	margin-top: 1%;
+	margin-bottom: 5%;
+	margin-right: 5%;
+	text-align: right;
+}
+
+.deleteType{
+	display: inline-block;
+	margin-bottom: 6%;
+}
+.deleteType label{
+	border: 0px;
+}
+.deleteType p{
+	font-size: 14px;
+	margin-left: 16px;
+	margin-bottom: 0px;
+	color: #b3b3b3;
+}
+.oneComment{
+	border-bottom: 1px grey solid;
+}
+.authorDetails{
+	min-width: 20%;
+	font-weight: bold;
+	color: #EF4C25;
+}
+.commentDetails{
+	margin-left: 50px;
+}

@@ -6,7 +6,7 @@ Ceci est une application permettant à tous les citoyens d'aider à sauver les c
 
 Avec cette application disponible sur IOS et Android gratuitement,
 
-**Vous pourrez**:
+*Vous pourrez*:
 * Créer un compte
 * Voir sur la carte tous les pauvres chats qui nécessitent de l'aide
 * Avoir la liste complète des problèmes et les trier selon vos critères de recherche
@@ -35,7 +35,7 @@ Vous aurez accès à la map avec un curseur indiquant votre posisition (il vous 
 ### Menu déroulant
 
 En cliquant sur l'icone de menu en haut à gauche, vous accéderez au menu de l'application. Depuis ce menu,
-**Vous accéderez**:
+*Vous accéderez*:
 * A votre profil personnel
 * A la liste des problèmes
 * A nos conditions d'utilisations
@@ -74,6 +74,7 @@ Les utilisateurs ayant le rôle de staff auront la possibilité d'éditer les d�
 - Optimiser la fonction d'afficher des commentaires. Cliquer pour devoir les voir n'est pas optimisé.
 
 ### Notes Back-end
+
 
 Cette partie contient les informations générales concernant les controllers dans le dossier js. Les services et fonctions de base ajoutées lors de la théorie au début du projet ne sont pas expliqués. 
 
@@ -115,9 +116,11 @@ Le controller MapCtrl permet de gérer la géolocalisation et l'affichage des is
 
 La gestion des données de l'utilisateur dans le AuthService et l'exploitation de ce service et non les cookies.
 
-Le rafraîchissement direct pour certaines opérations. 
+Le rafraîchissement direct pour certaines opérations.
 
 Et plus en général :
 
 La gestion des paramètres de l'utilisateur : - Pouvoir supprimer son compte
+
 - Pouvoir modifier les paramètres de son compte
+
