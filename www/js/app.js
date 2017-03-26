@@ -54,6 +54,8 @@ angular.module('citizen-engagement').config(function($stateProvider, $urlRouterP
       url: '/myProfile',
       views: {
         'menuContent': {
+          controller: 'LoginCtrl',
+          controllerAs: 'loginCtrl',
           templateUrl: 'templates/myProfile.html'
         }
       }

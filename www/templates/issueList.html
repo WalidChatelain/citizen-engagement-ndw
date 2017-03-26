@@ -1,11 +1,11 @@
 <ion-view view-title="Issue List">
   <ion-content>
     <div ng-controller="allIssuesCtrl">
-      <label class="item item-input">
+      <label class="item item-input searchbar">
                 <span class="input-label">Search</span>
                 <input ng-model="searchText">
       </label>
-        <div ng-repeat="issue in issues" class="list" ng-class-even="'green'">
+        <div ng-repeat="issue in issues | filter:searchText" class="list" ng-class-even="'green'">
             <div class="issueImage">
               <img ng-src="{{issue.imageUrl}}">
             </div>

@@ -19,10 +19,8 @@ angular.module('citizen-engagement').service('AuthService', function(store) {
 
 angular.module('citizen-engagement').controller('LoginCtrl', function(apiUrl, AuthService, $http, $ionicHistory, $ionicLoading, $scope, $state, $cookies) {
   var loginCtrl = this;
-
   // The $ionicView.beforeEnter event happens every time the screen is displayed.
   $scope.$on('$ionicView.beforeEnter', function() {
-    //console.log('test');
     // Re-initialize the user object every time the screen is displayed.
     // The first name and last name will be automatically filled from the form thanks to AngularJS's two-way binding.
     loginCtrl.user = {};
@@ -30,7 +28,6 @@ angular.module('citizen-engagement').controller('LoginCtrl', function(apiUrl, Au
     loginCtrl.registrationEnable = false;
     //console.log(loginCtrl.registrationEnable);
   });
-
 
   // Add the register function to the scope.
   loginCtrl.logIn = function() {
@@ -44,20 +41,19 @@ angular.module('citizen-engagement').controller('LoginCtrl', function(apiUrl, Au
       delay: 750
     });
 
-    // Make the request to retrieve or create the user.
-    // TU DOIS UTILISER LA VARIABLE loginCtrl.registrationEnable pour tester si tu dois accepter la registration
-    // si false = envoie pas, si true et que les champs sont correct = envoie
     $http({
       method: 'POST',
       url: apiUrl + '/auth',
       data: loginCtrl.user
     }).then(function(res) {
 
+      var user = res.data.user;
+      console.log(user);
 
+      // On pousse des cookies afin de garder des données à exploiter dans les autres controllers
       $cookies.put('userRole',res.data.user.roles);
-      //var userRoleLogged;
-      //userRoleLogged = $cookies.get('userRole');
-      //console.log(userRoleLogged);
+      $cookies.put('userName',res.data.user.name);
+
       // If successful, give the token to the authentication service.
       AuthService.setAuthToken(res.data.token);
 
@@ -87,17 +83,9 @@ angular.module('citizen-engagement').controller('LoginCtrl', function(apiUrl, Au
     
     // Pas toucher ça, pour que le formulaire registration s'affiche
     loginCtrl.registrationEnable = true;
-    //console.log(loginCtrl.registrationEnable);
-
 
     // Forget the previous error (if any).
     delete loginCtrl.error;
-
-    // Show a loading message if the request takes too long.
-    /*$ionicLoading.show({
-      template: 'Register in...',
-      delay: 750
-    });*/
 
     // Make the request to retrieve or create the user.
     console.log(loginCtrl.registrationEnable);
@@ -136,6 +124,10 @@ angular.module('citizen-engagement').controller('LoginCtrl', function(apiUrl, Au
     }
     
   };
+
+    // Pour l'exploiter dans le menu
+    $scope.user = {};
+    $scope.user.name = $cookies.get('userName');
 });
 
 
@@ -145,6 +137,7 @@ angular.module('citizen-engagement').controller('LogoutCtrl', function(AuthServi
   logoutCtrl.logOut = function() {
     AuthService.unsetAuthToken();
     $cookies.remove('userRole');
+    $cookies.remove('userName');
     $state.go('login');
   };
 });
@@ -156,8 +149,7 @@ angular.module('citizen-engagement').controller('AnyCtrl', function(AuthService,
       Authorization: 'Bearer ' + AuthService.authToken
     }
   }).then(function(res) {
-    /*$scope.user = res;
-    console.log(res);*/
+
   });
 })
 

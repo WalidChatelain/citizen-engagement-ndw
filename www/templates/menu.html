@@ -1,9 +1,9 @@
 <ion-side-menus enable-menu-with-back-views="false">
   <ion-side-menu-content>
     <ion-nav-bar class="bar-stable">
-      <ion-nav-back-button>
+      <ion-nav-back-button class="button-clear">
+        <i class="icon ion-ios7-arrow-back button-icon"></i>
       </ion-nav-back-button>
-
       <ion-nav-buttons side="left">
         <button class="button button-icon button-clear ion-navicon" menu-toggle="left">
         </button>
@@ -17,7 +17,7 @@
       <ion-list>
         <ion-item menu-close ui-sref='app.home' class="sideMenu">
           <img src="img/user.jpg">
-          <p id="menuText">Nom Prénom</p>
+          <p id="menuText" ng-controller="LoginCtrl as loginCtrl">{{user.name}}</p>
         </ion-item>
         <ion-item menu-close ui-sref='app.home' class="sideMenu">
           <i class="icon ion-home"></i>
@@ -30,10 +30,6 @@
         <ion-item menu-close ui-sref='app.issueList' class="sideMenu">
           <i class="icon ion-settings"></i>
           <p>Issues</p>
-        </ion-item>
-        <ion-item menu-close ui-sref='app.policy' class="sideMenu">
-          <i class="icon ion-document-text"></i>
-          <p>Policy</p>
         </ion-item>
         <ion-item menu-close ng-controller="LogoutCtrl as logoutCtrl" ng-click="logoutCtrl.logOut()" class="sideMenu">
           <i class="icon ion-log-out"></i>
