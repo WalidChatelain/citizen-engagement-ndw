@@ -56,12 +56,22 @@ Vous trouverez ici la liste complète des problèmes stockées dans notre base d
 
 ![Imgur](http://i.imgur.com/0Yi147K.png)
 
- ### Détails d'un problème
+ ### Détails d'un problème - Vue Citizen 
 
 En cliquant sur la flèche noir à droite d'un problème, vous accéderez aux détails de ce problème. Sur cette page, vous pourrez également poster des commentaires.
 Les utilisateurs ayant le rôle de staff auront la possibilité d'éditer les détails des problèmes et de créer des nouveaux types afin de mieux classer les problèmes.
 
-![Imgur](http://i.imgur.com/0Yi147K.png)
+![Imgur](http://i.imgur.com/VJcUIGv.png)
+
+ ### Détails d'un problème - Vue Staff
+
+En étant connecté comme staff, vous aurez la possibilité d'avoir accès à des options complémentaires sur a page Issue Details. Ces options vous permettrons de:
+
+* Changer l'état d'un problème
+* Crée un nouveau type de problème
+* Supprimer un type de problème
+
+![Imgur](http://i.imgur.com/JjP3XCW.png)
 
 ### Implémentations futures 
 
@@ -69,7 +79,6 @@ Les utilisateurs ayant le rôle de staff auront la possibilité d'éditer les d�
 - Filtrer les problèmes sur un rayon de X autour de la personne selon ses envies.
 - Afficher la liste des problèmes d'un utilisateur sur son profil personnel.
 - Donner la possibilité de changer le nom d'utilisateur et le mot de passe à un utilisateur via l'icone d'édition sur la page Myprofile.
-- Une interface administration pour les fonctionnalités staff plus propre.
 - Rajouter une page avec les conditions générales d'utilisation.
 - Optimiser la fonction d'afficher des commentaires. Cliquer pour devoir les voir n'est pas optimisé.
 
