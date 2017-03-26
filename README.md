@@ -20,13 +20,13 @@ C'est très facile! Nous avons simplement besoin d'un nom d'utilisateur, de votr
 
 ![Imgur](http://i.imgur.com/u43DCxx.png)
 
-## Pour vous logger
+### Pour vous logger
 
 Il vous suffira de rentrer votre nom d'utilisateur et votre mot de passe personnel. Afin de rendre votre expérience plus agréable, notre application se souviendra de vous et ne vous redemandera pas de vous logger tant que vous ne vous delogger pas manuellement!
 
 ![Imgur](http://i.imgur.com/2raXsoD.png)
 
-## Une fois loggé
+### Une fois loggé
 
 Vous aurez accès à la map avec un curseur indiquant votre posisition (il vous faut activer la géolocalisation sur votre smartphone) ainsi qu'aux problèmes proches de vous symbolisés par des icones de chat.
 
@@ -63,11 +63,61 @@ Les utilisateurs ayant le rôle de staff auront la possibilité d'éditer les d�
 
 ![Imgur](http://i.imgur.com/0Yi147K.png)
 
-## Implémentations futures 
+### Implémentations futures 
 
-- La possibilité de choisir son emplacement sur la carte quand on poste un problème
-- Filtrer les problèmes sur un rayon de X autour de la personne selon ses envies
-- Afficher la liste des problèmes d'un utilisateur sur son profil personnel
-- Une interface administration pour les fonctionnalités staff plus propre
-- Revoir les conditions d'utilisations et leur mise en page
+- La possibilité de choisir son emplacement sur la carte quand on poste un problème.
+- Filtrer les problèmes sur un rayon de X autour de la personne selon ses envies.
+- Afficher la liste des problèmes d'un utilisateur sur son profil personnel.
+- Donner la possibilité de changer le nom d'utilisateur et le mot de passe à un utilisateur via l'icone d'édition sur la page Myprofile.
+- Une interface administration pour les fonctionnalités staff plus propre.
+- Rajouter une page avec les conditions générales d'utilisation.
+- Optimiser la fonction d'afficher des commentaires. Cliquer pour devoir les voir n'est pas optimisé.
 
+### Notes Back-end
+
+Cette partie contient les informations générales concernant les controllers dans le dossier js. Les services et fonctions de base ajoutées lors de la théorie au début du projet ne sont pas expliqués. 
+
+Ça se peut qu'il faille recharger les pages pour certaines opérations (ajout de commentaire et voir celui-ci directement, changement d'état d'une issue et voir celle-ci directement et ajout d'une issueType et voir celui-ci directement)
+
+auth.js :  Ce controller contient les différents fonctions et services permettant à un utilisateur de se logger ou de s'enregistrer.  Le controller LoginCtrl contient : - Une fonction de login qui permet à l'utilisateur de se logguer et de fixer des cookies(roles et nom d'utilisateur) afin de garder les infos de l'utilisateur à travers les différentes actions et views de l'application. Ces cookies sont supprimés lorsque l'utilisateur se déloggue.
+
+- Une fonction register qui permet aux utilisateurs de se créer un compte
+
+Le controller LogoutCtrl contient : - Une fonction qui permet à l'utilisateur de se délogguer et de supprimer les cookies créés lors du login.
+
+Les controller AnyCtrl et AuthInterceptor permettent de gérer le token d'identification de l'user.
+
+issues.js :  Ce controller contient les différentes fonctions permettant la gestion des issues.
+
+Le controller allIssuesCtrl permet de gérer l'affichage de toutes les issues dans la partie Issue List de l'application, elle nous affiche toutes les issues et la gestion de la pagination avec la fonction loadMore.
+
+Le controller issueCtrl permet de gérer les différentes opérations liée à une issue précise, c’est-à-dire les détails d'une issue. De base, il affiche les détails de l'issue sélectionnée.   Ce controller contient :  - Une fonction seeComments qui permet de voir les commentaires de l'issue en question avec une gestion de la pagination.
+
+- Une fonction postComments qui permet de poster un commentaire pour cette issue précise.
+
+- Un fonction manageIssues qui permet aux utilisateurs "staff" de changer l'état d'une issue.
+
+- Une fonction addIssueType qui permet aux utilisateurs "staff" d'ajouter un type d'issue.
+
+- Une fonction deleteIssueType qui permet aux utilisateurs "staff" de supprimer une type d'issue.
+
+Le controller newIssueCtrl permet de gérer l'ajout d'une nouvelle issue. Cet ajout se fait depuis la page "Home" de l'application.
+
+Le controller MapCtrl permet de gérer la géolocalisation et l'affichage des issues sur la carte.  A améliorer ;
+ La séparation plus précise des différents controllers :
+- Avoir un fichier user,js pour y mettre la fonction de "register".
+- De mettre tout ce qui concerne les commentaires dans un fichier comments.js.
+- Tout ce qui gère les les types d'issues, dans un fichiers issueTypes.js.
+- Un fichier states.js qui contient la fonction de management des états.
+- Avoir un fichier newIssues.js pour tout ce qui concerne la création des nouvelles issues.
+- Avoir un fichier Map.js qui gère tout ce qui touche à la carte et géoloc.
+- Avoir un fichier Camera.js qui gère tout ce qui concerne la caméra. 
+
+La gestion des données de l'utilisateur dans le AuthService et l'exploitation de ce service et non les cookies.
+
+Le rafraîchissement direct pour certaines opérations. 
+
+Et plus en général :
+
+La gestion des paramètres de l'utilisateur : - Pouvoir supprimer son compte
+- Pouvoir modifier les paramètres de son compte
