@@ -20,13 +20,13 @@ C'est très facile! Nous avons simplement besoin d'un nom d'utilisateur, de votr
 
 ![Imgur](http://i.imgur.com/u43DCxx.png)
 
-### Pour vous logger
+### Pour vous log
 
 Il vous suffira de rentrer votre nom d'utilisateur et votre mot de passe personnel. Afin de rendre votre expérience plus agréable, notre application se souviendra de vous et ne vous redemandera pas de vous logger tant que vous ne vous delogger pas manuellement!
 
 ![Imgur](http://i.imgur.com/2raXsoD.png)
 
-### Une fois loggé
+### Une fois log
 
 Vous aurez accès à la map avec un curseur indiquant votre posisition (il vous faut activer la géolocalisation sur votre smartphone) ainsi qu'aux problèmes proches de vous symbolisés par des icones de chat.
 
@@ -74,7 +74,6 @@ Les utilisateurs ayant le rôle de staff auront la possibilité d'éditer les d�
 - Optimiser la fonction d'afficher des commentaires. Cliquer pour devoir les voir n'est pas optimisé.
 
 ### Notes Back-end
-
 
 Cette partie contient les informations générales concernant les controllers dans le dossier js. Les services et fonctions de base ajoutées lors de la théorie au début du projet ne sont pas expliqués. 
 
