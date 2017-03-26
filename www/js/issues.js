@@ -4,7 +4,7 @@ angular.module('citizen-engagement')
 
     $scope.noMoreItemsAvailable = false;
     $scope.issues = [];
-    
+
     var i = 0;
     var currentPage = 0;
     //console.log('controller');
@@ -42,7 +42,7 @@ angular.module('citizen-engagement')
         $scope.userIsStaff = false;
         var userRoleLogged = $cookies.get('userRole');
         console.log(userRoleLogged);
-        
+
         //console.log(userRoleLogged);
         $scope.noMoreCommentsAvailable = false;
         $scope.seeCommentsClick = false;
@@ -50,7 +50,7 @@ angular.module('citizen-engagement')
         var currentPageComments = 0;
 
         console.log('helllo');
-        
+
         $scope.issue = {};
         $scope.comment = {};
         $scope.data = {};
@@ -72,8 +72,8 @@ angular.module('citizen-engagement')
         var substring = "staff";
        // console.log(userRoleLogged.includes(substring));
 
-        if (userRoleLogged.includes(substring)){
-            $scope.userIsStaff = true;  
+        if (userRoleLogged.indexOf(substring)>=0){
+            $scope.userIsStaff = true;
         }
         //console.log($scope.userIsStaff);
         //var seeCommentsClick = false;
@@ -92,7 +92,7 @@ angular.module('citizen-engagement')
          $scope.seeComments = function() {
            $scope.seeCommentsClick = true;
             //console.log(issueId);
-            
+
             $http({
                 method: 'GET',
                 url: apiUrl + '/issues/'+issueId+'/comments?include=author&page='+ currentPageComments +'&pageSize=50'
@@ -111,14 +111,14 @@ angular.module('citizen-engagement')
                 $scope.noMoreCommentsAvailable = true;
                 }
                 j++;
-                
+
                 $scope.$broadcast('scroll.infiniteScrollComplete');
 
             }).catch(function() {
                 // If an error occurs, hide the loading message and show an error message.
                 $scope.error = 'Can not get the comments';
-            });  
-  
+            });
+
         };
 
         $scope.postComments = function() {
@@ -131,7 +131,7 @@ angular.module('citizen-engagement')
             }).success(function(comments) {
                 console.log('bordel');
             });
-  
+
         };
 
         $scope.manageIssues = function (){
@@ -145,16 +145,16 @@ angular.module('citizen-engagement')
                 url: apiUrl + '/issues/'+issueId+'/actions',
                 data: $scope.action
                 }).success(function(actions) {
-     
+
                 });
-                
+
             }else if ((issueState == "new" || issueState == "inProgress") && $scope.action.type == "reject"){
                 $http({
                 method: 'POST',
                 url: apiUrl + '/issues/'+issueId+'/actions',
                 data: $scope.action
                 }).success(function(actions) {
-     
+
                 });
             }else if (issueState == "inProgress" && $scope.action.type == "resolve"){
 
@@ -163,15 +163,15 @@ angular.module('citizen-engagement')
                 url: apiUrl + '/issues/'+issueId+'/actions',
                 data: $scope.action
                 }).success(function(actions) {
-      
+
                 });
 
 
             }else{
                 console.log('Vous ne respectez pas les conditions de transition des états');
             }
-       
-           
+
+
         };
 
         $scope.addIssueType = function (){
@@ -202,7 +202,7 @@ angular.module('citizen-engagement')
 
         };
 
-        
+
     });
 
 
@@ -225,7 +225,7 @@ angular.module('citizen-engagement').controller('newIssueCtrl', function(geoloca
                         type: 'Point',
                         coordinates: coor
                     };
-                    
+
                 }).catch(function(err) {
                     $log.error('Could not get location because: ' + err.message);
                 });
@@ -302,7 +302,7 @@ angular.module('citizen-engagement').controller('newIssueCtrl', function(geoloca
 
 });
 
-  
+
 
 angular.module('citizen-engagement').controller('MapCtrl', function($scope, mapboxSecret) {
   var mapCtrl = this;
@@ -371,5 +371,3 @@ angular.module('citizen-engagement').factory('CameraService', function($q) {
   };
   return service;
 });
-
-
