@@ -32,41 +32,41 @@
         </div>
 
     </div>
-    <div class="card">
+    <div class="card" ng-if="userIsStaff">
       <div class="detailsManager">
         <label class="item item-input">
-          <input type="text" ng-if="userIsStaff" placeholder="Reason" ng-model="action.reason"/>
+          <input type="text" placeholder="Reason" ng-model="action.reason"/>
         </label>
         <label class="item item-input">
-          <input type="text" ng-if="userIsStaff" placeholder="Type" ng-model="action.type"/>
+          <input type="text" placeholder="Type" ng-model="action.type"/>
         </label>
       </div>
       <div class="buttonManager">
-        <button class="button button-medium" ng-if="userIsStaff" ng-click="manageIssues()">Manage issue</button>
+        <button class="button button-medium" ng-click="manageIssues()">Manage issue</button>
       </div>
 
       <div class="detailsManager">
         <label class="item item-input">
-          <input type="text" ng-if="userIsStaff" placeholder="Name" ng-model="issueType.name"/>
+          <input type="text" placeholder="Name" ng-model="issueType.name"/>
         </label>
         <label class="item item-input">
-          <input type="text" ng-if="userIsStaff" placeholder="Description" ng-model="issueType.description"/>
+          <input type="text" placeholder="Description" ng-model="issueType.description"/>
         </label>
       </div>
       <div class="buttonManager">
-        <button class="button button-medium ight" ng-if="userIsStaff" ng-click="addIssueType()">Add a type</button>
+        <button class="button button-medium ight" ng-click="addIssueType()">Add a type</button>
       </div>
 
       <div class="deleteType">
-        <p>Quel type voulez-vous supprimer ?</p>
-        <label ng-if="userIsStaff" class="item item-input">
+        <p >Quel type voulez-vous supprimer ?</p>
+        <label class="item item-input">
           <select name="issueTypeName" ng-model="data.selectedType" ng-change='test()'>
             <option ng-repeat="issueType in issueTypes" value="{{issueType.id}}">{{issueType.name}}</option>
           </select>
         </label>
       </div>
       <div class="buttonDetails">
-        <button class="button button-medium" ng-if="userIsStaff" ng-click="deleteIssueType()">Delete </button>
+        <button class="button button-medium" ng-click="deleteIssueType()">Delete </button>
       </div>
 
       <p ng-if="issueCtrl.error" class="error">{{ issueCtrl.error }}</p>
