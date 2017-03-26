@@ -340,6 +340,7 @@ angular.module('citizen-engagement').factory('CameraService', function($q) {
   var mapboxTileLayerUrl = 'http://api.tiles.mapbox.com/v4/' + mapboxMapId;
   mapboxTileLayerUrl = mapboxTileLayerUrl + '/{z}/{x}/{y}.png';
   mapboxTileLayerUrl = mapboxTileLayerUrl + '?access_token=' + mapboxAccessToken;
+
         mapCtrl.center = {
               lat: 51.48,
               lng: 0,
@@ -390,4 +391,8 @@ angular.module('citizen-engagement').factory('CameraService', function($q) {
             });
 
         });
+        //Use the satellite view for the map
+        mapCtrl.defaults = {
+          tileLayer: mapboxTileLayerUrl
+        };
     })
